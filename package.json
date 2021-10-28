@@ -1,0 +1,40 @@
+{
+  "name": "video-backend",
+  "private": true,
+  "version": "0.0.0",
+  "description": "a Sails application",
+  "keywords": [],
+  "dependencies": {
+    "@sailshq/lodash": "^3.10.3",
+    "@sendgrid/mail": "^7.5.0",
+    "bcryptjs": "^2.4.3",
+    "firebase-admin": "^10.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "sails": "^1.4.3",
+    "sails-hook-grunt": "^5.0.0",
+    "sails-hook-orm": "^3.0.2",
+    "sails-hook-sockets": "^2.0.0",
+    "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "eslint": "5.16.0",
+    "sails-postgresql": "^3.0.0"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "test": "npm run lint && npm run custom-tests && echo 'Done.'",
+    "lint": "./node_modules/eslint/bin/eslint.js . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
+    "custom-tests": "echo \"(No other custom tests yet.)\" && echo"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kosy/video-backend.git"
+  },
+  "author": "kosy",
+  "license": "",
+  "engines": {
+    "node": "^16.2"
+  }
+}

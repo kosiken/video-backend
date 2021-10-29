@@ -46,8 +46,7 @@ module.exports = {
      ***************************************************************************/
     default: {
       adapter: "sails-mongo",
-      // mongodb+srv://kosy:<password>@videoapp.iogha.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-      url: "mongodb+srv://kosy:lion8989lion@videoapp.iogha.mongodb.net/ereder?retryWrites=true&w=majority",
+      url: process.env.MONGO_URL,
       //--------------------------------------------------------------------------
       //  /\   To avoid checking it in to version control, you might opt to set
       //  ||   sensitive credentials like `url` using an environment variable.

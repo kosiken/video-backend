@@ -22,26 +22,20 @@ module.exports = {
   },
 
   exits: {
-    success: {
-      description: "The requesting user agent has been successfully registered",
-      statusCode: 201,
-    },
-    unauthorizedRequest: {
-      description: "There is a problem with input parameters",
-      responseType: "unauthorizedRequest",
-    },
-    notFound: {
-      description: "There is a problem with input parameters",
-      statusCode: 404,
-      responseType: "notFound",
-    },
     badRequest: {
       description: "There is a problem with input parameters",
       responseType: "badRequest",
     },
     serverError: {
-      description: "There is a problem with input parameters",
+      description: "There is a problem on the server",
       responseType: "serverError",
+      statusCode: 500,
+    },
+    notFound: {
+      description: "There is a problem with input parameters",
+      statusCode: 404,
+      responseType: "view",
+      viewTemplatePath: "pages/admin/login",
     },
   },
 
@@ -59,7 +53,6 @@ module.exports = {
         });
       }
 
-      let admin = model;
       let valid = await sails.helpers.validatePassword(
         inputs.password,
         model.password
@@ -71,10 +64,10 @@ module.exports = {
         });
       }
       sails.log.info("Setting cookie");
-      console.log(this.req.query)
+      console.log(this.req.query ,"kkkk");
       this.req.session.userId = model.id;
       
-      return exits.success(admin)
+      return this.res.redirect(this.req.query.redirectTo || "/admin/api/dashboard");
     } catch (error) {
       console.log(exits);
       return exits.serverError({ message: error.message });

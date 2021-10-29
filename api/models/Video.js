@@ -15,7 +15,7 @@ module.exports = {
     price: {
       type: "number",
       defaultsTo: 0,
-      min: 100,
+      min: 5,
     },
     title: {
       type: "string",

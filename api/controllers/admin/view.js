@@ -7,24 +7,20 @@ module.exports = {
 
   exits: {
     success: {
-      viewTemplatePath: "pages/admin/view",
-      layout: "layouts/layout-admin",
+      description: "The requesting user agent has been successfully registered",
+      statusCode: 201,
+    },
+    unauthorizedRequest: {
+      description: "There is a problem with input parameters",
+      responseType: "unauthorizedRequest",
     },
     badRequest: {
       description: "There is a problem with input parameters",
-      responseType: "view", viewTemplatePath: "pages/admin/view",
-     
+      responseType: "badRequest",
     },
     serverError: {
-      description: "There is a problem on the server",
-      responseType: "view", viewTemplatePath: "pages/admin/view",
-      statusCode: 500,
-    },
-    notFound: {
       description: "There is a problem with input parameters",
-      statusCode: 404,
-      responseType: "view",
-      viewTemplatePath: "pages/admin/view",
+      responseType: "serverError",
     },
   },
 
@@ -36,6 +32,8 @@ module.exports = {
       user: User,
 
       request: Request,
+      transaction: Transaction,
+      wallet: Wallet,
     };
 
     try {
@@ -43,43 +41,46 @@ module.exports = {
       let id = this.req.params.id;
       let view = this.req.params.modelName;
 
-      let object = await Models[view].findOne({
-        id,
-      });
-
+      let theModel = Models[view];
+      if (!theModel) {
+        return exits.badRequest({
+          message: `Cannot find ${view} with id ${id}, ${view} model does not exist`,
+        });
+      }
+      let object;
+      if (view === "wallet") {
+        object = await Models[view]
+          .findOne({
+            id,
+          })
+          .populate("owner");
+      } else {
+        object = await Models[view].findOne({
+          id,
+        });
+      }
       if (!object) {
         return exits.notFound({
-          title: "View " + view,
-          hasError: true,
-          errorMessage:`Cannot find ${view} with id ${id}`,
-          layout: "layouts/layout-admin",
+          message: `Cannot find ${view} with id ${id}`,
         });
       }
 
       if (object.password) delete object.password;
-      delete object.createdAt;
       delete object.updatedAt;
 
-      for(let key in object) {
-        if(object[key] === ""  || (!object[key] && object[key] !== false)) {
-          object[key] = "None"
+      for (let key in object) {
+        if (object[key] === "" || (!object[key] && object[key] !== false)) {
+          object[key] = "None";
         }
       }
-      
-  
+
       // All done.
-      return exits.success( {
-        title: "Admin -" +  (object.name || object.fullName || view),
-        identifiers: Object.keys(object),
+      return exits.success(
         object,
-        view,layout:"layouts/layout-admin"
-      });
+      );
     } catch (error) {
       return exits.serverError({
-        title: "View " + view,
-        hasError: true,
-        errorMessage:`Cannot load this page at this time error -> ${error.message}`,
-        layout: "layouts/layout-admin",
+        message: `Cannot load this page at this time error -> ${error.message}`,
       });
     }
   },

@@ -20,9 +20,12 @@ module.exports = {
     const model = inputs.model;
     const IdentifierList = {
       user: ["id", "fullName", "isCreator"],
-      video: ["id", "title"],
+      video: ["id", "title", "videoType", "viewCount"],
       channel: ["id", "name"],
       request: ["id", "userAssociated"],
+      transaction: ["id", "transactionType", "status"],
+      wallet: ["id", "income", "owner"],
+      faq: ["id", "title"],
     };
     // Get identifiers.
     let identifiers;

@@ -13,6 +13,10 @@ module.exports.routes = {
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
   "GET /": { action: "dashboard/view-welcome" },
+  "GET /faqs": {action: "all-faqs"},
+  "POST /reset-password": { action: "request-reset-password" },
+  "GET /reset-password": { action: "verify-reset-password-token" },
+  "POST /update-password": { action: "reset-password" },
   "POST /signup": { action: "user/signup" },
   "POST /login": { action: "user/login" },
   "GET /email/confirm": { action: "user/verify-email" },
@@ -20,10 +24,13 @@ module.exports.routes = {
   "GET /api/me": { action: "user/me" },
   "POST /api/user/update": { action: "user/update-details" },
   "GET /api/creator/become": { action: "creator/become" },
+  "GET /api/creator/wallet": { action: "creator/get-wallet" },
+
   "GET /api/creator/channel": { action: "creator/get-channel" },
   "GET /api/creator/bank-details": { action: "creator/get-account-details" },
   "POST /api/creator/channel": { action: "creator/update-channel" },
   "POST /api/creator/bank-details": { action: "creator/add-account-details" },
+  "POST /api/creator/withdraw": { action: "creator/request-withdrawal" },
 
   //user
 
@@ -68,18 +75,31 @@ module.exports.routes = {
     locals: {
       layout: "layouts/layout-admin",
       title: "Ereder",
-
     },
   },
 
+  "POST /admin/html/signup": { action: "admin/html/signup" },
+  "POST /admin/html/login": { action: "admin/html/login" },
+  "POST /admin/api/privacyPolicy": { action: "admin/update-privacy-policy" },
+
+  "GET /admin/html/api/:modelName": { action: "admin/html/model" },
+  "GET /admin/html/api/:modelName/:id": { action: "admin/html/view" },
+  "GET /admin/html/api/edit/:modelName/:id": { action: "admin/html/edit" },
+  "GET /admin/html/api/delete/:modelName/:id": { action: "admin/html/delete" },
+  "GET /admin/html/api.create/:modelName": { action: "admin/html/create" },
 
   "POST /admin/signup": { action: "admin/signup" },
   "POST /admin/login": { action: "admin/login" },
+  "POST /admin/api/handle-withdrawal-request": {
+    action: "admin/handle-withdrawal-request",
+  },
   "GET /admin/api/:modelName": { action: "admin/model" },
   "GET /admin/api/:modelName/:id": { action: "admin/view" },
   "GET /admin/api/edit/:modelName/:id": { action: "admin/edit" },
   "GET /admin/api/delete/:modelName/:id": { action: "admin/delete" },
-  "GET /admin/api.create/:modelName": { action: "admin/create" },
+  "GET /admin/api/create/:modelName": { action: "admin/create" },
+  "POST /admin/api/faq": {action: "admin/create-faq"},
+  "PUT /admin/api/faq/:faqId": {action: "admin/update-faq"},
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝

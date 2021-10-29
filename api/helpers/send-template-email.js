@@ -204,6 +204,7 @@ module.exports = {
     );
     return {
       loggedInsteadOfSending: dontActuallySend,
+      htmlEmailContents
     };
   },
 };

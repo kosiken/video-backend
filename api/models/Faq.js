@@ -1,20 +1,15 @@
 module.exports = {
   attributes: {
-    amount: {
-      type: "number",
-      required: true,
-    },
-    userAssociated: {
-      model: "user",
-      required: true,
-    },
-    status: {
+    title: {
       type: "string",
-      defaultsTo: "pending",
-      isIn: ["pending", "fulfilled", "denied"],
+      required: true,
     },
-    
-  },beforeCreate: async function (valuesToSet, proceed) {
+    body: {
+      type: "string",
+      required: true,
+    },
+  },
+  beforeCreate: async function (valuesToSet, proceed) {
     // Hash password
     console.log("here");
     const IsDev = sails.config.environment === "development";

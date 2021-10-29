@@ -36,14 +36,6 @@ module.exports = {
   },
 
   exits: {
-    success: {
-      description: "The requesting user agent has been successfully registered",
-      statusCode: 201,
-    },
-    unauthorizedRequest: {
-      description: "There is a problem with input parameters",
-      responseType: "unauthorizedRequest",
-    },
     badRequest: {
       description: "There is a problem with input parameters",
       responseType: "badRequest",
@@ -77,22 +69,15 @@ module.exports = {
         sails.log.info("Setting cookie");
         this.req.session.userId = admin.id;
 
-        return exits.success(admin);
+        return this.res.redirect("/admin/api/dashboard");
       }
       return exits.serverError({
         message: "Failed to create admin",
       });
     } catch (err) {
-      console.log(err.name, err)
-      if (err.code=== "E_UNIQUE") {
-        return exits.badRequest({
-          message: "User with email " + inputs.emailAddress + " exists already",
-        });
-      } else {
-        return exits.serverError({
-          message: "Failed to create admin" + err.message,
-        });
-      }
+      return exits.serverError({
+        message: "Failed to create admin" + err.message,
+      });
     }
   },
 };

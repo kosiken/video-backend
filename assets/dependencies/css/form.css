@@ -29,8 +29,7 @@
   input[type="tel"],
   input[type="time"],
   input[type="url"],
-  textarea,
-  select {
+  textarea {
     background: rgba(255,255,255,0.1);
     border: none;
     font-size: 16px;
@@ -50,11 +49,7 @@
     margin: 0 4px 8px 0;
   }
   
-  select {
-    padding: 6px;
-    height: 32px;
-    border-radius: 2px;
-  }
+
   
   button {
     padding: 10px 20px;

@@ -17,6 +17,7 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
+    let wallet;
     if (this.req.me) {
       let model = await User.updateOne(
         { id: this.req.me.id },
@@ -27,22 +28,30 @@ module.exports = {
         let channel = await Channel.findOne({ user: model.id });
         if (!channel) {
           const IsDev = sails.config.environment === "development";
-          let toCreate = {
+          const toCreate = {
             user: model.id,
             name: `Channel-${uuid}`,
             logo: "/images/defaultLogo.jpg",
             banner: "/images/defaultBanner.jpg",
           };
+          const toCreateWallet = {
+            owner: model.id,
+            income: 0,
+          };
+
           if (IsDev) {
             toCreate.id = "none";
+            toCreateWallet.id = "none";
           }
+
           channel = await Channel.create(toCreate);
+          wallet = await Wallet.create(toCreateWallet).fetch();
         }
 
         // sails.log.info(channel);
       }
 
-      return exits.success({ isCreator: model.isCreator });
+      return exits.success({ isCreator: model.isCreator, wallet });
     }
     // All done.
     return exits.unauthorizedRequest({ message: "No session found" });

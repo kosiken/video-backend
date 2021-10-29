@@ -92,9 +92,9 @@ module.exports = {
 
       user.token = token;
     } catch (err) {
-      if (err.name === "E_UNIQUE") {
+      if (err.code=== "E_UNIQUE") {
         return exits.badRequest({
-          message: err.message,
+          message: "User with email " + inputs.emailAddress + " exists already",
         });
       } else {
         return exits.serverError(err.message);

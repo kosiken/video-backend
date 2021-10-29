@@ -1,5 +1,5 @@
 <div class="form-div">
-    <form  id="form" action="/admin/login" method="post"  style="padding: 2em 1em; height: 100vh; overflow: scroll">
+    <form  id="form" action="/admin/html/login" method="post"  style="padding: 2em 1em; height: 100vh; overflow: scroll">
 
 
         <h1>Log in</h1>
@@ -18,7 +18,7 @@
 
         <button type="submit">Log in</button>
 
-        <p>Not an admin? Become <a href="/admin/signup">one</a></p>
+        <p>Not an admin? Become <a href="/admin/html/signup">one</a></p>
 
         <% if (hasError) { %>
             <p style="color: red" > <%= errorMessage %> </p>
@@ -34,7 +34,7 @@
   if(window.location.search) {
         let form = document.getElementById('form');
         if(form) {
-        form.setAttribute('action', window.location.pathname + window.location.search);
+        form.setAttribute('action', '/admin/html/login' + window.location.search);
     }
     }
 });  

@@ -16,9 +16,8 @@ module.exports = {
     },
     role: {
       type: "string",
-      example: "Patient",
-      enum: ["new_user", "patient", "physician", "admin"],
-      description: "The role of the user",
+      example: "reset_token",
+      description: "The role of the token",
     },
     isAdmin: {
       type: "boolean",

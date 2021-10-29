@@ -6,26 +6,25 @@ module.exports = {
   inputs: {},
 
   exits: {
-    success: { viewTemplatePath: "pages/admin/list" ,layout:"layouts/layout-admin"},
+    success: {
+      description: "The requesting user agent has been successfully registered",
+      statusCode: 201,
+    },
+    unauthorizedRequest: {
+      description: "There is a problem with input parameters",
+      responseType: "unauthorizedRequest",
+    },
     badRequest: {
       description: "There is a problem with input parameters",
       responseType: "badRequest",
-      viewTemplatePath: "pages/admin/list" 
     },
     serverError: {
-      description: "There is a problem on the server",
-      responseType: "serverError",
-      statusCode: 500,
-    },
-    notFound: {
       description: "There is a problem with input parameters",
-      statusCode: 404,
-      responseType: "view",
-      viewTemplatePath: "pages/admin/login",
+      responseType: "serverError",
     },
   },
 
-  fn: async function (inputs) {
+  fn: async function (inputs, exits) {
     const Models = {
       video: Video,
       channel: Channel,
@@ -33,28 +32,34 @@ module.exports = {
       user: User,
 
       request: Request,
+      transaction: Transaction,
+      wallet: Wallet,
     };
 
-    const query = this.req.query;
-    if (query && query.page) {
-      page = query.page;
+    try {
+      const req = this.req;
+      const query = this.req.query;
+      if (query && query.page) {
+        page = query.page;
+      }
+
+      let theModel = Models[req.params.modelName];
+      if (!theModel) {
+        return exits.badRequest({
+          message: `Cannot find ${req.params.modelName}, ${req.params.modelName} model does not exist`,
+        });
+      }
+      const _model = Models[this.req.params.modelName];
+      // console.log(_model);
+
+      const objects = await _model.find();
+
+      // All done.
+      return exits.success(objects);
+    } catch (error) {
+      return exits.serverError({
+        message: `Cannot load this page at this time error -> ${error.message}`,
+      });
     }
-
-    const _model = Models[this.req.params.modelName];
-    // console.log(_model);
-
-    const objects = await _model.find();
-
-    let ret = {
-      modelName: this.req.params.modelName.toUpperCase(),
-      identifiers: await sails.helpers.getIdentifiers.with({
-        model: this.req.params.modelName,
-      }),
-      objects,
-      title: "Admin - " + this.req.params.modelName,layout:"layouts/layout-admin"
-    };
-
-    // All done.
-    return ret;
   },
 };

@@ -1,65 +1,76 @@
 <div class="content">
   <%- partial('../../partials/sidebar.ejs') %>
+    <% if(!hasError) { %>
+      <div style="overflow-y: scroll; height: 100vh;">
+        <a href="/create/<%= modelName.toLowerCase() %>">
+          <span>Create</span>
+          <span class="material-icons">
+            add
+          </span>
+        </a>
 
-    <div style="overflow-y: scroll; height: 100vh;">
-      <a href="/create/<%= modelName.toLowerCase() %>">
-        <span>Create</span>
-        <span class="material-icons">
-          add
-        </span>
-      </a>
+        <div class="container">
 
-      <div class="container">
+          <table>
+            <caption>
 
-        <table>
-          <caption>
-
-            <%= modelName %> Summary
+              <%= modelName %> Summary
 
 
-          </caption>
+            </caption>
 
-          <thead>
-            <% identifiers.forEach( function(identifier){ %>
+            <thead>
+              <% identifiers.forEach( function(identifier){ %>
 
-              <th>
-                <%= identifier %>
-              </th>
-              <% }); %>
                 <th>
-                  View
+                  <%= identifier %>
                 </th>
-          </thead>
+                <% }); %>
+                  <th>
+                    View
+                  </th>
+            </thead>
 
-          <tbody>
+            <tbody>
 
 
-            <% objects.forEach(function(object) { %>
+              <% objects.forEach(function(object) { %>
 
 
-              <tr>
-                <% identifiers.forEach( function(identifier){ %>
+                <tr>
+                  <% identifiers.forEach( function(identifier){ %>
 
-                  <td>
-                    <%= object[identifier] %>
-                  </td>
-                  <% }); %>
                     <td>
-                      <a href="/admin/api/<%= modelName.toLowerCase() %>/<%= object.id %>" class="black ">
-
-                        More
-
-                      </a>
-
+                      <%= object[identifier] %>
                     </td>
                     <% }); %>
+                      <td>
+                        <a href="/admin/html/api/<%= modelName.toLowerCase() %>/<%= object.id %>" class="black ">
 
-              </tr>
-          </tbody>
-        </table>
+                          More
 
+                        </a>
+
+                      </td>
+                      <% }); %>
+
+                </tr>
+            </tbody>
+          </table>
+
+
+        </div>
 
       </div>
+      <% } else { %>
+        <div class="main-content">
+          <div class="image-content">
+            <img src="/images/error.png" class="home-img" alt="homeImage" />
 
-    </div>
+            <p>
+              <%= errorMessage %>
+            </p>
+          </div>
+        </div>
+        <% } %>
 </div>

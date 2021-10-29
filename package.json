@@ -22,6 +22,7 @@
   "devDependencies": {
     "dotenv": "^10.0.0",
     "eslint": "5.16.0",
+    "faker": "^5.5.3",
     "sails-postgresql": "^3.0.0"
   },
   "scripts": {

@@ -7,20 +7,25 @@ module.exports = {
 
   exits: {
     success: {
-      description: "The requesting user agent has been successfully registered",
-      statusCode: 201,
-    },
-    unauthorizedRequest: {
-      description: "There is a problem with input parameters",
-      responseType: "unauthorizedRequest",
+      viewTemplatePath: "pages/admin/deletepage",
+      layout: "layouts/layout-admin",
     },
     badRequest: {
       description: "There is a problem with input parameters",
-      responseType: "badRequest",
+      responseType: "view",
+      viewTemplatePath: "pages/admin/deletepage",
     },
     serverError: {
+      description: "There is a problem on the server",
+      responseType: "view",
+      viewTemplatePath: "pages/admin/deletepage",
+      statusCode: 500,
+    },
+    notFound: {
       description: "There is a problem with input parameters",
-      responseType: "serverError",
+      statusCode: 404,
+      responseType: "view",
+      viewTemplatePath: "pages/admin/deletepage",
     },
   },
 
@@ -32,7 +37,8 @@ module.exports = {
 
       user: User,
 
-      request: Request,   transaction: Transaction
+      request: Request,
+      faq: Faq
     };
 
     try {

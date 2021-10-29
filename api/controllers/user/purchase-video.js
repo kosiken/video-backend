@@ -64,10 +64,9 @@ module.exports = {
           message: "Cannot be purchasing free video",
         });
       }
-      if(channel.user === this.req.me.id) {
+      if (channel.user === this.req.me.id) {
         return exits.badRequest({
           message: "Cannot be purchasing your own video",
-
         });
       }
 
@@ -77,17 +76,65 @@ module.exports = {
       });
       if (!purchase) {
         const accessCode = await sails.helpers.createUserId.with();
+
         const IsDev = sails.config.environment === "development";
-        if(IsDev) {
-          inputs.id = 'none'
+        if (IsDev) {
+          inputs.id = "none";
         }
+        let wallet = await Wallet.findOne({
+          owner: channel.user,
+        });
+
+        if (!wallet) {
+          sails.log.error("Cannot find wallet for channel " + channel.id);
+          exits.serverError({
+            message: "there is an issue completing this purchase",
+          });
+        }
+
         purchase = await Purchase.create({
           ...inputs,
           userWhoPurchased: this.req.me.id,
           amountPaid: video.price,
           channel: channel.id,
-          accessCode
+          accessCode,
         }).fetch();
+
+        await Wallet.updateOne(
+          {
+            id: wallet.id,
+          },
+          {
+            income: wallet.income + video.price * 0.9,
+          }
+        );
+
+        let ereder = await ErederWallet.findOne({ identifier: "ErederWallet" });
+        if (!ereder) {
+          let inner = { depositBalance: video.price };
+          if (IsDev) {
+            inner.id = "none";
+          }
+          ereder = await ErederWallet.create(inner).fetch();
+        } else {
+          ereder = await ErederWallet.updateOne(
+            { identifier: "ErederWallet" },
+            {
+              depositBalance: video.price + ereder.depositBalance,
+            }
+          );
+        }
+
+        let toCreate = {
+          amount: video.price,
+          transactionType: "payment",
+          depositBalance: ereder.depositBalance,
+          associatedUser: channel.user,
+        };
+        if (IsDev) {
+          toCreate.id = "none";
+        }
+        await Transaction.create(toCreate);
       }
       return exits.success(purchase);
     } catch (err) {

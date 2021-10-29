@@ -1,5 +1,5 @@
 <div class="form-div">
-    <form action="/admin/signup" method="post"  style="padding: 2em 1em; height: 100vh; overflow: scroll">
+    <form action="/admin/html/signup" method="post"  style="padding: 2em 1em; height: 100vh; overflow: scroll">
 
 
         <h1>Sign Up</h1>
@@ -18,7 +18,7 @@
             <input type="text" id="admin-ket" name="adminKey">
    
         <button type="submit">Sign Up</button>
-        <p>Already an admin? <a href="/admin/login">login</a></p>
+        <p>Already an admin? <a href="/admin/html/login">login</a></p>
         <% if (hasError) { %>
             <p style="color: red" > <%= errorMessage %> </p>
             <%} %>

@@ -144,15 +144,16 @@ without necessarily having a billing card.`,
     },
     bankName: {
       type: "string",
-    
     },
     bankAccountName: {
       type: "string",
-
     },
     bankAccountNumber: {
       type: "string",
-
+    },
+    transactions: {
+      collection: "transaction",
+      via: "associatedUser",
     },
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

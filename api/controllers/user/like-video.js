@@ -5,11 +5,11 @@ module.exports = {
 
   inputs: {
     videoLiked: {
-      type: "number",
+      type: "string",
       required: true,
     },
     channel: {
-      type: "number",
+      type: "string",
       required: true,
     },
   },
@@ -49,7 +49,7 @@ module.exports = {
         videoLiked: inputs.videoLiked,
       });
       if (!like) {
-        let channel = await Channel.findOne({ id: parseInt(inputs.channel) });
+        let channel = await Channel.findOne({ id: inputs.channel });
 
         if (!channel) {
           return exits.badRequest({
@@ -57,15 +57,16 @@ module.exports = {
           });
         }
 
-        let video = await Video.findOne({ id: parseInt(inputs.videoLiked) });
+        let video = await Video.findOne({ id: inputs.videoLiked });
         if (!video) {
           return exits.notFound({
             message: "No such video",
           });
         }
-
+        const IsDev = sails.config.environment === "development";
+        if (IsDev) {inputs.id = "none";}
         like = await Like.create({
-          ...inputs,id: 'none',
+          ...inputs,
           likedBy: this.req.me.id,
         }).fetch();
       }

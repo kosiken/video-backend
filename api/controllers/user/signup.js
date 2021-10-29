@@ -61,7 +61,11 @@ module.exports = {
     try {
       inputs.emailProofToken = await sails.helpers.createUserId.with();
       inputs.emailProofTokenExpiresAt = Date.now() + 2 * 3600 * 1000;
-      inputs.id =  'none';
+      // inputs.id =  'none';
+      const IsDev = sails.config.environment === "development";
+      if(IsDev) {
+        inputs.id = 'none';
+      }
       user = await User.create(inputs).fetch();
       console.log(this.req.hostname + " " + sails.config.custom.hostname);
 

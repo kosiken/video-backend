@@ -15,7 +15,7 @@ module.exports = {
     price: {
       type: "number",
       defaultsTo: 0,
-      min: 100
+      min: 100,
     },
     title: {
       type: "string",
@@ -50,14 +50,15 @@ module.exports = {
       collection: "view",
       via: "video",
     },
-  } , beforeCreate: async function (valuesToSet, proceed) {
+  },
+  beforeCreate: async function (valuesToSet, proceed) {
     // Hash password
     console.log("here");
     const IsDev = sails.config.environment === "development";
     if (IsDev) {
       let id = await sails.helpers.createUserId.with();
       valuesToSet.id = id;
-      return proceed();
     }
+    return proceed();
   },
 };

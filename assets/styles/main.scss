@@ -1,0 +1,179 @@
+@import "./variables.scss";
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Lato", sans-serif;
+  margin: 0;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 200px auto;
+}
+.model-list {
+  height: 100vh;
+  background-color: $feint;
+  padding-top: 15%;
+}
+
+.model {
+  color: $bg;
+  display: block;
+  display: flex;
+  padding: 8px 10px;
+  text-decoration: none;
+  margin: 0 0 2px;
+  .model-name {
+    margin-left: 10px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.main-content {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-content {
+  text-align: center;
+}
+
+.home-img {
+  width: 300px;
+}
+
+.black {
+  color: $bg-video;
+}
+
+.object-property {
+  margin-right: 15px;
+}
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+  caption {
+    font-size: 1.5em;
+    margin: 0.5em 0 0.75em;
+  }
+
+  tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 0.35em;
+  }
+
+  th,
+  td {
+    padding: 0.625em;
+    text-align: center;
+  }
+
+  th {
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.container {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.form-div {
+  padding: 10px;
+
+  label {
+    display: block;
+  }
+
+  .form-input {
+    padding: 15px 10px;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    background: #F8F8FA;
+    /* border-radius: 12px; */
+    /* border: none; */
+  }
+}
+
+
+form {
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+
+   padding: 6px 27px;
+  width: auto;
+  vertical-align: middle;
+  border: none;
+  background-color: $feint;  color: $bg;
+
+}

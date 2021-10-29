@@ -3,12 +3,7 @@ module.exports = {
 
   description: "",
 
-  inputs: {
-    channel: {
-      type: "number",
-      required: true,
-    },
-  },
+
 
   exits: {
     success: {
@@ -34,14 +29,18 @@ module.exports = {
     },
   },
 
-  fn: async function (inputs, exits) {
+  fn: async function (_, exits) {
     try {
       if (!this.req.me) {
         return exits.unauthorizedRequest({ message: "No Session found" });
       }
       let id = this.req.me.id;
+      let channelId = this.req.params.channelId;
+      if (!channelId) {
+        exits.badRequest({ message: "channelId is required" });
+      }
       let sub = await Subscription.findOne({
-        ...inputs,
+        channel: channelId,
         userSubscribing: id,
       });
 
@@ -49,7 +48,7 @@ module.exports = {
         return exits.badRequest({ message: "Already subscribed to channel" });
       }
 
-      let channel = await Channel.findOne({ id: inputs.channel });
+      let channel = await Channel.findOne({ id: channelId });
       if (!channel) {
         return exits.notFound({ message: "No such channel exists" });
       }
@@ -61,10 +60,15 @@ module.exports = {
       }
 
       if (!sub) {
-        sub = await Subscription.create({
-          ...inputs,
+        const IsDev = sails.config.environment === "development";
+        let toCreate = {
+          channel: channel.id,
           userSubscribing: id,
-        }).fetch();
+        };
+        if (IsDev) {
+          toCreate.id = "none";
+        }
+        sub = await Subscription.create(toCreate).fetch();
         channel = await Channel.updateOne(
           {
             id: channel.id,
@@ -72,7 +76,7 @@ module.exports = {
           { followerCount: channel.followerCount + 1 }
         );
       }
-      sub.channel = channel
+      sub.channel = channel;
       return exits.success(sub);
     } catch (err) {
       return exits.serverError({ message: err.message });

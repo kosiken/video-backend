@@ -1,0 +1,34 @@
+@mixin gen-gradient($start, $end) {
+  background: linear-gradient(117.45deg, $start 0%, $end 100%);
+}
+
+@mixin query-media($screen: 2) {
+  @if $screen == 0 {
+    @media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+      @content;
+    }
+  }
+  @if $screen == 1 {
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+      @content;
+    }
+  }
+  @if $screen == 2 {
+    @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
+      @content;
+    }
+  }
+}
+$bg: #e8e8e9;
+$startColor: #69e805;
+$endColor: #03b50a;
+$icon-btn-border-color: #D5D5D5;
+
+$desktop-min: 1200px;
+$desktop-max: 1600px;
+$feint: #565e73;;
+$bg-video: #000000;
+
+.mo {
+    
+}

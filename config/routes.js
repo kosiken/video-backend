@@ -39,9 +39,10 @@ module.exports.routes = {
   'POST /api/user/like': {action: 'user/like-video'},
   'POST /api/user/un-like': {action: 'user/un-like-video'},
   'POST /api/user/view': {action: 'user/view-video'},
+  'POST /api/user/view/:accessCode': {action: 'user/view-restricted-video'},
   'POST /api/user/purchase': {action: 'user/purchase-video'},
   'POST /api/user/card': {action: 'user/add-card'},
-  'POST /api/user/subscribe': {action: 'user/subscribe-to-channel'},
+  'GET /api/user/subscribe/:channelId': {action: 'user/subscribe-to-channel'},
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝

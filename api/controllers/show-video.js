@@ -40,7 +40,7 @@ module.exports = {
       if (!_video) {
         return exits.badRequest({ message: "videoId is required" });
       }
-      let video = await Video.findOne({ id: parseInt(_video) }).populate(
+      let video = await Video.findOne({ id: (_video) }).populate(
         "channel"
       );
 

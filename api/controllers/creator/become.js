@@ -26,12 +26,17 @@ module.exports = {
         let uuid = await sails.helpers.createUserId.with();
         let channel = await Channel.findOne({ user: model.id });
         if (!channel) {
-          channel = await Channel.create({
+          const IsDev = sails.config.environment === "development";
+          let toCreate = {
             user: model.id,
             name: `Channel-${uuid}`,
             logo: "/images/defaultLogo.jpg",
             banner: "/images/defaultBanner.jpg",
-          });
+          };
+          if (IsDev) {
+            toCreate.id = "none";
+          }
+          channel = await Channel.create(toCreate);
         }
 
         // sails.log.info(channel);

@@ -172,7 +172,7 @@ without necessarily having a billing card.`,
     if (IsDev) {
       let id = await sails.helpers.createUserId.with();
       valuesToSet.id = id;
-      return proceed();
     }
+    return proceed();
   },
 };

@@ -4,7 +4,7 @@ module.exports = {
   description: 'Display "Video" page.',
   inputs: {
     video: {
-      type: "number",
+      type: "string",
       required: true,
     },
     duration: {
@@ -50,7 +50,9 @@ module.exports = {
         });
       }
 
-      let purchase = Purchse.findOne({ accessCode }).populate("videoPurchased");
+      let purchase = Purchase.findOne({ accessCode }).populate(
+        "videoPurchased"
+      );
       if (!purchase) {
         return exits.badRequest({
           message: "Purchase with accessCode " + accessCode + " not found",
@@ -82,13 +84,18 @@ module.exports = {
             message: "Cannot find channel",
           });
         }
-        view = await View.create({
+        const IsDev = sails.config.environment === "development";
+        let toCreate = {
           video: video.id,
           duration: inputs.duration > 1000 ? inputs.duration : 1000,
           userWhoViewed: this.req.me.id,
           channel: video.channel.id,
           isPayedView: true,
-        }).fetch();
+        };
+        if (IsDev) {
+          toCreate.id = "none";
+        }
+        view = await View.create(toCreate).fetch();
 
         channel = await Channel.updateOne(
           {

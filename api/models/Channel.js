@@ -27,14 +27,15 @@ module.exports = {
       collection: "purchase",
       via: "channel",
     },
-  },  beforeCreate: async function (valuesToSet, proceed) {
+  },
+  beforeCreate: async function (valuesToSet, proceed) {
     // Hash password
     console.log("here");
     const IsDev = sails.config.environment === "development";
     if (IsDev) {
       let id = await sails.helpers.createUserId.with();
       valuesToSet.id = id;
-      return proceed();
     }
+    return proceed();
   },
 };

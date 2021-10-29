@@ -5,7 +5,7 @@ module.exports = {
 
   inputs: {
     videoPurchased: {
-      type: "number",
+      type: "string",
       required: true,
     },
   },
@@ -77,6 +77,10 @@ module.exports = {
       });
       if (!purchase) {
         const accessCode = await sails.helpers.createUserId.with();
+        const IsDev = sails.config.environment === "development";
+        if(IsDev) {
+          inputs.id = 'none'
+        }
         purchase = await Purchase.create({
           ...inputs,
           userWhoPurchased: this.req.me.id,

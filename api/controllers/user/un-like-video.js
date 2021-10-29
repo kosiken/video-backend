@@ -5,7 +5,7 @@ module.exports = {
 
   inputs: {
     videoLiked: {
-      type: "number",
+      type: "string",
       required: true,
     },
   },

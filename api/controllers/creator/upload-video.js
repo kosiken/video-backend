@@ -77,6 +77,11 @@ module.exports = {
           });
         }
       }
+      const IsDev = sails.config.environment === "development";
+      if(IsDev) {
+        inputs.id = 'none';
+      }
+
       let video = await Video.create({
         ...inputs,
         channel: channel.id,

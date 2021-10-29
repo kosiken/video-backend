@@ -9,6 +9,23 @@ module.exports = {
       defaultsTo: "ErederWallet",
       unique: true,
     },
+    twitterUrl: {
+      type: "string",
+      defaultsTo: "https://twitter.com/kosisoali",
+    },
+    instagramUrl: {
+      type: "string",
+      defaultsTo: "https://instagram.com/allisonkosy",
+    },
+    others: {
+      type: "string",
+      defaultsTo: JSON.stringify([
+        {
+          app: "Youtube",
+          url: "https://www.youtube.com/channel/UCYC34xdbCK_5rYYotnpUvQQ",
+        },
+      ]),
+    },
   },
   beforeCreate: async function (valuesToSet, proceed) {
     // Hash password

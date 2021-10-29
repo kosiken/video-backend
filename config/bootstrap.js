@@ -11,6 +11,7 @@
 
 module.exports.bootstrap = async function () {
   try {
+
     let faqs = [
       {
         title: "What is Ereder",
@@ -21,6 +22,8 @@ module.exports.bootstrap = async function () {
         body: `Anyone can become a creator`,
       },
     ];
+    let ereder = await ErederWallet.findOne({ identifier: "ErederWallet" });
+
     let password = await sails.helpers.hashPassword.with({
       password: "0000",
     });
@@ -31,6 +34,13 @@ module.exports.bootstrap = async function () {
     };
 
     const IsDev = sails.config.environment === "development";
+    if (!ereder) {
+      let inner = { depositBalance:0 };
+      if (IsDev) {
+        inner.id = "none";
+      }
+      ereder = await ErederWallet.create(inner);
+    }
     if (IsDev) {
       adminCreate.id = "none";
       faqs = faqs.map((f) => {

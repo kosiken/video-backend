@@ -1,0 +1,1 @@
+Serie A, also called Serie A TIM for sponsorship reasons, is a professional league competition for football clubs located at the top of the Italian football league system and the winner is awarded the Scudetto and the Coppa Campioni d'Italia

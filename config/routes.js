@@ -13,7 +13,11 @@ module.exports.routes = {
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
   "GET /": { action: "dashboard/view-welcome" },
-  "GET /faqs": {action: "all-faqs"},
+  "GET /faqs": { action: "all-faqs" },
+  "GET /videos": { action: "all-videos" },
+  "GET /privacy-policy": { action: "get-privacy-policy" },
+  "GET /terms-conditions": { action: "get-terms-conditions" },
+
   "POST /reset-password": { action: "request-reset-password" },
   "GET /reset-password": { action: "verify-reset-password-token" },
   "POST /update-password": { action: "reset-password" },
@@ -37,6 +41,12 @@ module.exports.routes = {
   "GET /api/user/history": { action: "user/history" },
   "GET /api/user/paid-videos": { action: "user/paid-videos" },
   "GET /api/user/following": { action: "user/subcribed-channels" },
+
+
+
+  "POST /api/user/message/:ticketId": { action: "user/message-admin" },
+  "POST /api/user/ticketI": { action: "user/add-ticket" },
+
 
   "POST /api/creator/video": { action: "creator/upload-video" },
   "POST /api/user/like": { action: "user/like-video" },
@@ -80,7 +90,13 @@ module.exports.routes = {
 
   "POST /admin/html/signup": { action: "admin/html/signup" },
   "POST /admin/html/login": { action: "admin/html/login" },
-  "POST /admin/api/privacyPolicy": { action: "admin/update-privacy-policy" },
+  "POST /admin/api/privacy-policy": { action: "admin/update-privacy-policy" },
+
+  "POST /admin/api/message/:ticketId": { action: "admin/message-user" },
+
+
+
+  "POST /admin/api/terms-conditions": { action: "admin/update-terms-conditions" },
 
   "GET /admin/html/api/:modelName": { action: "admin/html/model" },
   "GET /admin/html/api/:modelName/:id": { action: "admin/html/view" },
@@ -98,8 +114,8 @@ module.exports.routes = {
   "GET /admin/api/edit/:modelName/:id": { action: "admin/edit" },
   "GET /admin/api/delete/:modelName/:id": { action: "admin/delete" },
   "GET /admin/api/create/:modelName": { action: "admin/create" },
-  "POST /admin/api/faq": {action: "admin/create-faq"},
-  "PUT /admin/api/faq/:faqId": {action: "admin/update-faq"},
+  "POST /admin/api/faq": { action: "admin/create-faq" },
+  "PUT /admin/api/faq/:faqId": { action: "admin/update-faq" },
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝

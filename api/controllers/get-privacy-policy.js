@@ -1,6 +1,6 @@
 const path = require("path");
 
-const { writeFile } = require("fs").promises;
+const {readFile} = require("fs").promises;
 
 module.exports = {
   friendlyName: "Update privacy policy",
@@ -8,10 +8,7 @@ module.exports = {
   description: "",
 
   inputs: {
-    body: {
-      type: "string",
-      required: true,
-    },
+ 
   },
 
   exits: {
@@ -24,7 +21,9 @@ module.exports = {
   fn: async function (inputs, exits) {
     let privacyPolicyPath = path.join(process.cwd(), "data/privacy-policy.md");
 
-    let file = await writeFile(privacyPolicyPath, inputs.body)
+    let file = await readFile(privacyPolicyPath, {
+      encoding: 'utf-8'
+    })
 
     return exits.success({
       path: privacyPolicyPath,

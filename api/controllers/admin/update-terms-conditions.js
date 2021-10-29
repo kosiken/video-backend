@@ -22,12 +22,12 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    let privacyPolicyPath = path.join(process.cwd(), "data/privacy-policy.md");
+    let tcPath = path.join(process.cwd(), "data/terms-and-conditions.md");
 
-    let file = await writeFile(privacyPolicyPath, inputs.body)
+    let file = await writeFile(tcPath, inputs.body)
 
     return exits.success({
-      path: privacyPolicyPath,
+      path: tcPath,
       file
     });
   },

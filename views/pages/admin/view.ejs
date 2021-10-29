@@ -1,30 +1,45 @@
 <div class="content">
 
-    <%- partial('../partials/sidebar.ejs') %>
+    <%- partial('../../partials/sidebar.ejs') %>
+        <% if(!hasError) { %>
+            <div style="overflow-y: scroll; height: 100vh;">
+                <div class="container">
+                    <h2>
+                        Details <%= view %>
+                    </h2>
+                    <a href="/admin/api/edit/<%= view + '/' + object.id %>">
+                        <button>Edit</button>
 
-        <div style="overflow-y: scroll; height: 100vh;">
-            <div class="container">
-                <h2>
-                    Details <%= view %>
-                </h2>
-                <a href="/model/edit/<%= view + '/' + object.id %>">
-                    <button>Edit</button>
+                    </a>
+                 
 
-                </a>
+                    <% identifiers.forEach( function (identifier) { %>
 
+                        <h3>
+                            <%= identifier %>
+                        </h3>
 
-                <% identifiers.forEach( function (identifier) { %>
-
-                    <h3>
-                        <%= identifier %>
-                    </h3>
-
-                    <p style="margin: 0;">
-                        <%= object[identifier] %>
-                    </p>
+                        <p style="margin: 0;">
+                            <%= object[identifier] %>
+                        </p>
 
 
-                    <% }) %>
+                        <% }) %>
+                        <a href="/admin/api/delete/<%= view + '/' + object.id %>">
+                            <button>Delete</button>
+    
+                        </a>    
+                </div>
             </div>
-        </div>
+            <% } else { %>
+                <div class="main-content">
+                    <div class="image-content">
+                        <img src="/images/error.png" class="home-img" alt="homeImage" />
+        
+                        <p>
+                            <%= errorMessage %> 
+                        </p>
+                    </div>
+                </div>
+                <% } %>
 </div>

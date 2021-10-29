@@ -63,11 +63,22 @@ module.exports.routes = {
       title: "Ereder",
     },
   },
-  "POST /admin/signup": { action: "admin/signup" },
+  "GET /admin/login": {
+    view: "pages/admin/login",
+    locals: {
+      layout: "layouts/layout-admin",
+      title: "Ereder",
 
+    },
+  },
+
+
+  "POST /admin/signup": { action: "admin/signup" },
+  "POST /admin/login": { action: "admin/login" },
   "GET /admin/api/:modelName": { action: "admin/model" },
   "GET /admin/api/:modelName/:id": { action: "admin/view" },
   "GET /admin/api/edit/:modelName/:id": { action: "admin/edit" },
+  "GET /admin/api/delete/:modelName/:id": { action: "admin/delete" },
   "GET /admin/api.create/:modelName": { action: "admin/create" },
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗

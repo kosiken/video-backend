@@ -19,7 +19,7 @@ module.exports = {
   fn: async function (inputs) {
     const model = inputs.model;
     const IdentifierList = {
-      user: ["id", "fullName"],
+      user: ["id", "fullName", "isCreator"],
       video: ["id", "title"],
       channel: ["id", "name"],
       request: ["id", "userAssociated"],

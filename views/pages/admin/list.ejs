@@ -1,5 +1,5 @@
 <div class="content">
-  <%- partial('../partials/sidebar.ejs') %>
+  <%- partial('../../partials/sidebar.ejs') %>
 
     <div style="overflow-y: scroll; height: 100vh;">
       <a href="/create/<%= modelName.toLowerCase() %>">
@@ -14,7 +14,7 @@
         <table>
           <caption>
 
-            <%= modelName %> Sunnary
+            <%= modelName %> Summary
 
 
           </caption>
@@ -45,7 +45,7 @@
                   </td>
                   <% }); %>
                     <td>
-                      <a href="/model/<%= modelName.toLowerCase() %>/<%= object.id %>" class="black ">
+                      <a href="/admin/api/<%= modelName.toLowerCase() %>/<%= object.id %>" class="black ">
 
                         More
 

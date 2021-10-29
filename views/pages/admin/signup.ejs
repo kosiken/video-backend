@@ -18,6 +18,10 @@
             <input type="text" id="admin-ket" name="adminKey">
    
         <button type="submit">Sign Up</button>
+        <p>Already an admin? <a href="/admin/login">login</a></p>
+        <% if (hasError) { %>
+            <p style="color: red" > <%= errorMessage %> </p>
+            <%} %>
     </form>
 
 </div>

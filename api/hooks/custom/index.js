@@ -23,7 +23,7 @@ module.exports = function defineCustomHook(sails) {
           skipAssets: true,
           fn: async function (req, res, next) {
             // No session? Proceed as usual.
-            console.log(req.url)
+            console.log(req.url);
             // (e.g. request for a static asset)
             if (!req.session) {
               return next();
@@ -32,15 +32,19 @@ module.exports = function defineCustomHook(sails) {
             // Not logged in? Proceed as usual.
             const IsDev = sails.config.custom.useToken;
 
-            if ((!IsDev && !req.session.userId) || req.url === "/signup") {
+            if ((!IsDev && !req.session.userId) || req.url === "/login") {
               return next();
             }
             let id = 0;
 
             try {
-              if(IsDev && !  (req.headers.authorization || req.headers.Authorization) // && !req.session.userId
+              if (
+                IsDev &&
+                !(req.headers.authorization || req.headers.Authorization)  && !req.session.userId
               ) {
-                return res.unauthorizedRequest({message: "No Session Found on req"})
+                return res.unauthorizedRequest({
+                  message: "No Session Found on req",
+                });
               }
               if (
                 IsDev &&
@@ -49,10 +53,14 @@ module.exports = function defineCustomHook(sails) {
                 let auth =
                   req.headers.authorization || req.headers.Authorization;
                 let [_, token] = auth.split(" ");
-           
-                if(!token) {return res.unauthorizedRequest({message: "No Session Found"})}
+
+                if (!token) {
+                  return res.unauthorizedRequest({
+                    message: "No Session Found",
+                  });
+                }
                 let n = await sails.helpers.verifyToken.with({ token });
-                id = (n.id);
+                id = n.id;
               } else {
                 id = req.session.userId;
               }
@@ -60,7 +68,7 @@ module.exports = function defineCustomHook(sails) {
               console.log(err);
             }
             // Otherwise, look up the logged-in user.
-         
+
             if (id === 0) {
               sails.log.warn(
                 "Somehow, the user record for the logged-in user (`" +
@@ -68,10 +76,12 @@ module.exports = function defineCustomHook(sails) {
                   "`) has gone missing...."
               );
               delete req.session.userId;
-              return res.unauthorizedRequest({message: "No user session found"});
+              return res.unauthorizedRequest({
+                message: "No user session found",
+              });
             }
 
-            var loggedInUser =await User.findOne({
+            var loggedInUser = await User.findOne({
               id,
             });
 
@@ -85,7 +95,7 @@ module.exports = function defineCustomHook(sails) {
                   "`) has gone missing...."
               );
               delete req.session.userId;
-              return res.unauthorizedRequest({message: 'No session found'});
+              return res.unauthorizedRequest({ message: "No session found" });
             }
 
             // Add additional information for convenience when building top-level navigation.
@@ -115,55 +125,34 @@ module.exports = function defineCustomHook(sails) {
           skipAssets: true,
           fn: async function (req, res, next) {
             // No session? Proceed as usual.
-            console.log(req.url)
+            console.log(req.url);
+            console.log("here");
+            // return next();
             // (e.g. request for a static asset)
             if (!req.session) {
               return next();
             }
-
+            console.log("here2");
             // Not logged in? Proceed as usual.
             const IsDev = false;
 
-            if ((!IsDev && !req.session.userId) || req.url === "/signup") {
-              return next();
-            }
             let id = 0;
 
-            try {
-              if(IsDev && !  (req.headers.authorization || req.headers.Authorization) // && !req.session.userId
-              ) {
-                return res.unauthorizedRequest({message: "No Session Found on req"})
-              }
-              if (
-                IsDev &&
-                (req.headers.authorization || req.headers.Authorization) //&& !req.session.userId
-              ) {
-                let auth =
-                  req.headers.authorization || req.headers.Authorization;
-                let [_, token] = auth.split(" ");
-           
-                if(!token) {return res.unauthorizedRequest({message: "No Session Found"})}
-                let n = await sails.helpers.verifyToken.with({ token });
-                id = (n.id);
-              } else {
-                id = req.session.userId;
-              }
-            } catch (err) {
-              console.log(err);
-            }
+            id = req.session.userId;
+
             // Otherwise, look up the logged-in user.
-         
-            if (id === 0) {
+
+            if (!id) {
               sails.log.warn(
                 "Somehow, the user record for the logged-in user (`" +
                   req.session.userId +
                   "`) has gone missing...."
               );
               delete req.session.userId;
-              return res.unauthorizedRequest({message: "No user session found"});
+              return res.redirect("/admin/login?redirectTo=" + req.url);
             }
 
-            var loggedInUser =await Admin.findOne({
+            var loggedInUser = await Admin.findOne({
               id,
             });
 
@@ -177,7 +166,7 @@ module.exports = function defineCustomHook(sails) {
                   "`) has gone missing...."
               );
               delete req.session.userId;
-              return res.unauthorizedRequest({message: 'No session found'});
+              return res.redirect("/admin/login?redirectTo=" + req.url);
             }
 
             // Add additional information for convenience when building top-level navigation.

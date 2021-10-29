@@ -158,6 +158,10 @@ without necessarily having a billing card.`,
     requests: {
       collection: 'request',
       via: 'userAssociated'
+    },
+    channelDeleted: {
+      type: "boolean",
+      defaultsTo: false,
     }
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

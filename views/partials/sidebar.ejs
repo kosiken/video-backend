@@ -1,0 +1,21 @@
+<div class="model-list" id="sidebar">
+
+    <% models.forEach(function(model) { %>
+
+      <a href="/admin/api/<%= model.name.toLowerCase() %>" class="model">
+        <span class="material-icons">
+          <%= model.icon %>
+        </span>
+        <span class="model-name">
+          <%= model.name %>
+        </span>
+      </a>
+
+      <% }); %>
+
+
+      <button id="logOutbtn">
+        LogOut
+      </button>
+
+  </div>

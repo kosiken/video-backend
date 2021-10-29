@@ -1,0 +1,30 @@
+<div class="content">
+
+    <%- partial('../partials/sidebar.ejs') %>
+
+        <div style="overflow-y: scroll; height: 100vh;">
+            <div class="container">
+                <h2>
+                    Details <%= view %>
+                </h2>
+                <a href="/model/edit/<%= view + '/' + object.id %>">
+                    <button>Edit</button>
+
+                </a>
+
+
+                <% identifiers.forEach( function (identifier) { %>
+
+                    <h3>
+                        <%= identifier %>
+                    </h3>
+
+                    <p style="margin: 0;">
+                        <%= object[identifier] %>
+                    </p>
+
+
+                    <% }) %>
+            </div>
+        </div>
+</div>

@@ -1,0 +1,32 @@
+<script>
+
+
+  function OnSubmit(event, method, urlTo, returnTo) {
+        event.preventDefault();
+
+
+        let inputs = Array.from(document.querySelectorAll('.form-input'));
+let toSubmit = [];
+for(let input of inputs) {
+    let encodedKey = encodeURIComponent(input.name);
+     let encodedValue = encodeURIComponent(input.value);
+  if(encodedValue)   toSubmit.push(encodedKey + "=" + encodedValue);
+}
+
+toSubmit = toSubmit.join("&");
+
+fetch(urlTo, {
+  method,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  },
+  body: toSubmit
+}).then(res => res.json()).then(value => {
+    window.location.replace(returnTo ||  '/model/<%= title %>/'+ value.id)
+})
+
+ 
+    }
+
+
+</script>

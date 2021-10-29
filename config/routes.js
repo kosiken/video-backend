@@ -9,50 +9,74 @@
  */
 
 module.exports.routes = {
-
   //  ╦ ╦╔═╗╔╗ ╔═╗╔═╗╔═╗╔═╗╔═╗
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
-  'GET /':             { action: 'dashboard/view-welcome' },
-  'POST /signup': {action: 'user/signup'},
-  'POST /login': {action: 'user/login'},
-  'GET /email/confirm': {action: 'user/verify-email'},
-  'GET /show-video/:videoId': {action: 'show-video'},
-  'GET /api/me': {action: 'user/me'},
-  'POST /api/user/update': {action: 'user/update-details'},
-  'GET /api/creator/become': {action: 'creator/become'},
-  'GET /api/creator/channel': {action: 'creator/get-channel'},
-  'GET /api/creator/bank-details': {action: 'creator/get-account-details'},
-  'POST /api/creator/channel': {action: 'creator/update-channel'},
-  'POST /api/creator/bank-details': {action: 'creator/add-account-details'},
-
-
+  "GET /": { action: "dashboard/view-welcome" },
+  "POST /signup": { action: "user/signup" },
+  "POST /login": { action: "user/login" },
+  "GET /email/confirm": { action: "user/verify-email" },
+  "GET /show-video/:videoId": { action: "show-video" },
+  "GET /api/me": { action: "user/me" },
+  "POST /api/user/update": { action: "user/update-details" },
+  "GET /api/creator/become": { action: "creator/become" },
+  "GET /api/creator/channel": { action: "creator/get-channel" },
+  "GET /api/creator/bank-details": { action: "creator/get-account-details" },
+  "POST /api/creator/channel": { action: "creator/update-channel" },
+  "POST /api/creator/bank-details": { action: "creator/add-account-details" },
 
   //user
-    
-  'GET /api/user/history': {action: 'user/history'},
-  'GET /api/user/paid-videos': {action: 'user/paid-videos'},
-  'GET /api/user/following': {action: 'user/subcribed-channels'},
 
-  
-  'POST /api/creator/video': {action: 'creator/upload-video'},
-  'POST /api/user/like': {action: 'user/like-video'},
-  'POST /api/user/un-like': {action: 'user/un-like-video'},
-  'POST /api/user/view': {action: 'user/view-video'},
-  'POST /api/user/view/:accessCode': {action: 'user/view-restricted-video'},
-  'POST /api/user/purchase': {action: 'user/purchase-video'},
-  'POST /api/user/card': {action: 'user/add-card'},
-  'GET /api/user/subscribe/:channelId': {action: 'user/subscribe-to-channel'},
+  "GET /api/user/history": { action: "user/history" },
+  "GET /api/user/paid-videos": { action: "user/paid-videos" },
+  "GET /api/user/following": { action: "user/subcribed-channels" },
+
+  "POST /api/creator/video": { action: "creator/upload-video" },
+  "POST /api/user/like": { action: "user/like-video" },
+  "POST /api/user/un-like": { action: "user/un-like-video" },
+  "POST /api/user/view": { action: "user/view-video" },
+  "POST /api/user/view/:accessCode": { action: "user/view-restricted-video" },
+  "POST /api/user/purchase": { action: "user/purchase-video" },
+  "POST /api/user/card": { action: "user/add-card" },
+  "GET /api/user/subscribe/:channelId": { action: "user/subscribe-to-channel" },
+
+  // Admin
+
+  "GET /admin": {
+    view: "pages/admin/homepage",
+    locals: {
+      layout: "layouts/layout-admin",
+      title: "Ereder",
+    },
+  },
+  "GET /admin/api/dashboard": {
+    view: "pages/admin/dashboard",
+    locals: {
+      layout: "layouts/layout-admin",
+      title: "Ereder",
+    },
+  },
+  "GET /admin/signup": {
+    view: "pages/admin/signup",
+    locals: {
+      layout: "layouts/layout-admin",
+      title: "Ereder",
+    },
+  },
+  "POST /admin/signup": { action: "admin/signup" },
+
+  "GET /admin/api/:modelName": { action: "admin/model" },
+  "GET /admin/api/:modelName/:id": { action: "admin/view" },
+  "GET /admin/api/edit/:modelName/:id": { action: "admin/edit" },
+  "GET /admin/api.create/:modelName": { action: "admin/create" },
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝
   // …
-
 
   //  ╔═╗╔═╗╦  ╔═╗╔╗╔╔╦╗╔═╗╔═╗╦╔╗╔╔╦╗╔═╗
   //  ╠═╣╠═╝║  ║╣ ║║║ ║║╠═╝║ ║║║║║ ║ ╚═╗
   //  ╩ ╩╩  ╩  ╚═╝╝╚╝═╩╝╩  ╚═╝╩╝╚╝ ╩ ╚═╝
   // Note that, in this app, these API endpoints may be accessed using the `Cloud.*()` methods
   // from the Paras
-
 };

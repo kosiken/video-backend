@@ -122,7 +122,7 @@ module.exports = function defineCustomHook(sails) {
             }
 
             // Not logged in? Proceed as usual.
-            const IsDev = sails.config.custom.useToken;
+            const IsDev = false;
 
             if ((!IsDev && !req.session.userId) || req.url === "/signup") {
               return next();

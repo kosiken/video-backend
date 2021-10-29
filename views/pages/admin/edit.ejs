@@ -1,0 +1,100 @@
+<div class="content">
+
+
+    <%- partial('../partials/sidebar.ejs') %>
+
+        <div style="overflow-y: scroll; height: 100vh;">
+
+            <div class="container">
+
+                <header>
+                    Edit this  <%= title %> 
+                </header>
+                <form id="create-form" action="/<%= title %>" <%= title %>" method="POST" onsubmit="OnSubmit">
+                    <% keys.forEach(function name(key) { %>
+                        <% if (key === "createdAt" || key === "updatedAt") return; %> 
+                        <% let type= attributes[key].ofType || attributes[key].type %>
+                        <% if (key === "Email") { %>
+                            <div class="form-div">
+                                <label for="<%= key %>">
+                                    <%= key %> 
+                                    </label>
+                                <input  type="email" placeholder="<%= object[key] %>" name="<%= key %>"  id="<%= key %> " class="form-input number">
+                                </div>
+                          <% return;}  %>
+         
+                        <% if (type === "string") { %>
+                <div class="form-div">
+                    <label for="<%= key %>">
+                        <%= key %> 
+                        </label>
+                    <input type="text"  name="<%= key %>"  placeholder="<%= object[key] %>" id="<%= key %> " class="form-input number">
+                    </div>
+              <% return;}  %>
+              <% if (type === "number") { %>
+                <div class="form-div">
+                    <label for="<%= key %>">
+                        <%= key %> 
+                        </label>
+                    <input type="number" min=1 name="<%= key %>"  placeholder="<%= object[key] %>" id="<%= key %> " class="form-input number">
+                    </div>
+              <% return;}  %>
+
+              <% if (type === "model") { %>
+                <div class="form-div">
+                    <label for="<%= key %>">
+                        <%= key %> 
+                        </label>
+                    <input type="number" min=1 name="<%= key %>" data-model="<%= key %>"  placeholder="<%= object[key] %>" id="<%= key %> " class="form-input number relic-model">
+                    </div>
+              <% return;}  %>
+
+
+              <% if (type === "select") { %>
+                <div class="form-div">
+
+                    <label for="<%= key %>">
+                    <%= key %> 
+                    </label>
+                    <select class="form-input select" name="<%= key %>" id="<%= key %>">
+                    <% attributes[key].isIn.forEach(element => { %>
+
+
+                        <% if (object[key] === element) { %>
+                             <option selected  value="<%= element %>">
+                                <%= element %>
+                            </option>
+                             
+                            <%} else { %>
+                                <option value="<%= element %>">
+                                    <%= element %>
+                                </option>
+                            <% } %>
+                      
+                   <% }); %> 
+                    </select>
+                 
+                     </div>
+              <% return;}  %>
+              
+
+                                    <% }) %>
+
+                                        <button class="btn-primary">
+                                            Done
+                                        </button>
+                </form>
+            </div>
+
+        </div>
+
+
+</div>
+
+<%- partial('../partials/form.ejs') %>
+<script>
+
+let id="create-form", action="/<%= title %>" 
+document.getElementById(id).onsubmit = () =>  OnSubmit(event, "PATCH", '/<%= title + '/' + id %>');
+
+</script>

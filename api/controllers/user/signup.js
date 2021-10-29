@@ -52,13 +52,14 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    inputs.password = await sails.helpers.hashPassword.with({
-      password: inputs.password,
-    });
+   
 
     let user;
     let html;
     try {
+      inputs.password = await sails.helpers.hashPassword.with({
+        password: inputs.password,
+      });
       inputs.emailProofToken = await sails.helpers.createUserId.with();
       inputs.emailProofTokenExpiresAt = Date.now() + 2 * 3600 * 1000;
       // inputs.id =  'none';

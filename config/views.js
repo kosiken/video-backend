@@ -36,6 +36,16 @@ module.exports.views = {
   *                                                                          *
   ***************************************************************************/
 
-  layout: 'layouts/layout'
+  layout: 'layouts/layout',
+  locals: {
+    models: [
+      { name: "User", icon: "face" },
+      { name: "Channel", icon: "favorite" },
+      { name: "Video", icon: "science" },
+      { name: "Request", icon: "pending_actions" },
+    
+  
+    ],
+  },
 
 };

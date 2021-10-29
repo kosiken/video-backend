@@ -1,0 +1,65 @@
+<div class="content">
+  <%- partial('../partials/sidebar.ejs') %>
+
+    <div style="overflow-y: scroll; height: 100vh;">
+      <a href="/create/<%= modelName.toLowerCase() %>">
+        <span>Create</span>
+        <span class="material-icons">
+          add
+        </span>
+      </a>
+
+      <div class="container">
+
+        <table>
+          <caption>
+
+            <%= modelName %> Sunnary
+
+
+          </caption>
+
+          <thead>
+            <% identifiers.forEach( function(identifier){ %>
+
+              <th>
+                <%= identifier %>
+              </th>
+              <% }); %>
+                <th>
+                  View
+                </th>
+          </thead>
+
+          <tbody>
+
+
+            <% objects.forEach(function(object) { %>
+
+
+              <tr>
+                <% identifiers.forEach( function(identifier){ %>
+
+                  <td>
+                    <%= object[identifier] %>
+                  </td>
+                  <% }); %>
+                    <td>
+                      <a href="/model/<%= modelName.toLowerCase() %>/<%= object.id %>" class="black ">
+
+                        More
+
+                      </a>
+
+                    </td>
+                    <% }); %>
+
+              </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+
+    </div>
+</div>

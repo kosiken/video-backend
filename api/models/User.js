@@ -155,6 +155,10 @@ without necessarily having a billing card.`,
       collection: "transaction",
       via: "associatedUser",
     },
+    requests: {
+      collection: 'request',
+      via: 'userAssociated'
+    }
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝

@@ -65,7 +65,7 @@ module.exports = {
         }
 
         like = await Like.create({
-          ...inputs,
+          ...inputs,id: 'none',
           likedBy: this.req.me.id,
         }).fetch();
       }

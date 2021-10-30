@@ -39,6 +39,8 @@ module.exports = {
     },
     duration: {
       type: "number",
+      min: 2 * 60 * 1000, required: true,
+
     },
     url: {
       type: "string",
@@ -50,6 +52,9 @@ module.exports = {
       collection: "view",
       via: "video",
     },
+    totalViewTime: {
+      type: "number", defaultsTo: 0
+    }
   },
   beforeCreate: async function (valuesToSet, proceed) {
     // Hash password

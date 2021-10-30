@@ -3,8 +3,6 @@ module.exports = {
 
   description: "",
 
-
-
   exits: {
     success: {
       description: "The requesting user agent has been successfully registered",
@@ -39,6 +37,27 @@ module.exports = {
       if (!channelId) {
         exits.badRequest({ message: "channelId is required" });
       }
+      let channel = await Channel.findOne({ id: channelId });
+      if (!channel) {
+        return exits.notFound({ message: "No such channel exists" });
+      }
+
+      if (this.req.query.unsubscribe === "true") {
+        let deleted = await Subscription.destroyOne({
+          channel: channelId,
+          userSubscribing: id,
+        });
+        if (!deleted) {
+          return exits.badRequest({
+            message: "Cannot unsubscribe if you have never subscribed before",
+          });
+        }
+       await Channel.updateOne({id: channel.id}, {
+          followerCount: channel.followerCount - 1
+        })
+
+        return exits.success({ deleted: true });
+      }
       let sub = await Subscription.findOne({
         channel: channelId,
         userSubscribing: id,
@@ -48,11 +67,7 @@ module.exports = {
         return exits.badRequest({ message: "Already subscribed to channel" });
       }
 
-      let channel = await Channel.findOne({ id: channelId });
-      if (!channel) {
-        return exits.notFound({ message: "No such channel exists" });
-      }
-
+   
       if (channel.user === id) {
         return exits.badRequest({
           message: "Cannot subscribe to your own channel",

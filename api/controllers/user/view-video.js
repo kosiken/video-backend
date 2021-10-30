@@ -2,16 +2,7 @@ module.exports = {
   friendlyName: "View video",
 
   description: 'Display "Video" page.',
-  inputs: {
-    video: {
-      type: "string",
-      required: true,
-    },
-    duration: {
-      type: "number",
-      required: true,
-    },
-  },
+  inputs: {},
 
   exits: {
     success: {
@@ -43,30 +34,44 @@ module.exports = {
         return exits.unauthorizedRequest({ message: "No Session found" });
       }
 
-      let video = await Video.findOne({ id: inputs.video }).populate('channel');
+      inputs.duration = parseInt(this.req.query.duration || 1000);
+      if (isNaN(inputs.duration)) {
+        return exits.badRequest({
+          message: "duration must be a number",
+        });
+      }
+      let video = await Video.findOne({ id: this.req.params.videoId }).populate(
+        "channel"
+      );
 
       if (!video) {
         return exits.badRequest({
           message: "Cannot be viewing non existent video",
         });
       }
-      if(video.videoType === 'restricted') {
+      
+      if (video.videoType === "restricted") {
         return exits.badRequest({
           message: "Cannot be viewing restricted video without accessToken",
         });
       }
+      if(inputs.duration > video.duration) {
+        return exits.badRequest({
+          message: `view duration ${inputs.duration} is greater than video total duration ${video.duration}`
+        })
+      }
+
       let view = await View.updateOne(
         {
           userWhoViewed: this.req.me.id,
           video: video.id,
         },
         {
-          duration: inputs.duration,
+          duration: this.req.query.duration || 1000,
         }
       );
 
       if (!view) {
-       
         if (!video.channel.id) {
           return exits.serverError({
             message: "Cannot find channel",
@@ -79,13 +84,11 @@ module.exports = {
           duration: inputs.duration > 1000 ? inputs.duration : 1000,
           userWhoViewed: this.req.me.id,
           channel: video.channel.id,
-        
         };
         if (IsDev) {
           toCreate.id = "none";
         }
         view = await View.create(toCreate).fetch();
-      
 
         channel = await Channel.updateOne(
           {
@@ -93,9 +96,20 @@ module.exports = {
           },
           { totalViews: video.channel.totalViews + 1 }
         );
-       video = await Video.updateOne({id: video.id}, {
-          viewCount: video.viewCount +  1
-        })
+        video = await Video.updateOne(
+          { id: video.id },
+          {
+            viewCount: video.viewCount + 1,
+            totalViewTime: video.totalViewTime + inputs.duration,
+          }
+        );
+      } else {
+        video = await Video.updateOne(
+          { id: video.id },
+          {
+            totalViewTime: video.totalViewTime + inputs.duration,
+          }
+        );
       }
 
       view.video = video;

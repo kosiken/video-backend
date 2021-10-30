@@ -91,6 +91,7 @@ module.exports = {
         return exits.success({
           video: video.viewCount,
           channel: channelViews,
+          
         });
       }
     } catch (error) {

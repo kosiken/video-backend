@@ -29,6 +29,7 @@ module.exports.routes = {
   "POST /api/user/update": { action: "user/update-details" },
   "GET /api/creator/become": { action: "creator/become" },
   "GET /api/creator/wallet": { action: "creator/get-wallet" },
+  "GET /api/creator/analytics/:modelName": { action: "creator/analytics" },
 
   "GET /api/creator/channel": { action: "creator/get-channel" },
   "GET /api/creator/bank-details": { action: "creator/get-account-details" },
@@ -37,11 +38,12 @@ module.exports.routes = {
   "POST /api/creator/withdraw": { action: "creator/request-withdrawal" },
 
   //user
-
+  "GET /logout": { action: "user/logout" },
   "GET /api/user/history": { action: "user/history" },
   "GET /api/user/paid-videos": { action: "user/paid-videos" },
   "GET /api/user/following": { action: "user/subcribed-channels" },
 
+  "POST /api/user/comment": { action: "user/add-comment" },
 
 
   "POST /api/user/message/:ticketId": { action: "user/message-admin" },
@@ -53,7 +55,7 @@ module.exports.routes = {
   "POST /api/user/un-like": { action: "user/un-like-video" },
   "GET /api/user/view/:videoId": { action: "user/view-video" },
   "GET /api/user/view-restricted/:videoId/:accessCode": { action: "user/view-restricted-video" },
-  "POST /api/user/purchase": { action: "user/purchase-video" },
+  "GET /api/user/purchase/:videoId": { action: "user/purchase-video" },
   "POST /api/user/card": { action: "user/add-card" },
   "GET /api/user/subscribe/:channelId": { action: "user/subscribe-to-channel" },
 

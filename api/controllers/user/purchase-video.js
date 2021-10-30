@@ -4,10 +4,7 @@ module.exports = {
   description: "",
 
   inputs: {
-    videoPurchased: {
-      type: "string",
-      required: true,
-    },
+
   },
 
   exits: {
@@ -46,8 +43,10 @@ module.exports = {
         });
       }
 
-      let video = await Video.findOne({ id: inputs.videoPurchased });
+      inputs.videoPurchased = this.req.params.videoId;
 
+      let video = await Video.findOne({ id: inputs.videoPurchased });
+      
       if (!video) {
         return exits.badRequest({
           message: "Cannot be purchasing non existent video",

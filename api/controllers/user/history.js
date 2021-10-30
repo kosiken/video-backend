@@ -37,7 +37,7 @@ module.exports = {
       let id = this.req.me.id;
       let views = await View.find({
         userWhoViewed: id,
-      }).populate("video");
+      }).populate("video").populate("channel");
 
       return exits.success(views);
     } catch (error) {

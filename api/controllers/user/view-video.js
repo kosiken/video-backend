@@ -29,6 +29,7 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
+    let purchase  = null;
     try {
       if (!this.req.me) {
         return exits.unauthorizedRequest({ message: "No Session found" });
@@ -51,9 +52,19 @@ module.exports = {
       }
       
       if (video.videoType === "restricted") {
-        return exits.badRequest({
+        let accessToken = this.req.query.accessToken;
+
+      if(!accessToken)  {return exits.badRequest({
           message: "Cannot be viewing restricted video without accessToken",
-        });
+        });}
+        purchase = await Purchase.findOne({ accessCode: accessToken });
+
+        if(!purchase || purchase.videoPurchased !== video.id) {
+          return exits.badRequest({
+            message: "Cannot be view restricted video, invalid accessToken",
+          });
+        }
+
       }
       if(inputs.duration > video.duration) {
         return exits.badRequest({
@@ -84,6 +95,7 @@ module.exports = {
           duration: inputs.duration > 1000 ? inputs.duration : 1000,
           userWhoViewed: this.req.me.id,
           channel: video.channel.id,
+          isPayedView: !!purchase
         };
         if (IsDev) {
           toCreate.id = "none";

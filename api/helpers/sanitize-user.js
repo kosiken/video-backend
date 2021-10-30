@@ -24,7 +24,10 @@ module.exports = {
       fullName: user.fullName,
       isCreator: user.isCreator,
       profilePic: user.profilePic || "/images/me.jpg",
-      has_billing_card: user.hasBillingCard
+      has_billing_card: user.hasBillingCard,
+      billing_card_brand: user.billingCardBrand,
+    
+      billing_card_last4: user.billingCardLast4,
     };
     return sanitized;
     // TODO

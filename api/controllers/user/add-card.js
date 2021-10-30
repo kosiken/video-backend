@@ -29,6 +29,11 @@ module.exports = {
       example: "2023",
       required: true,
     },
+    cvv: {
+      type: "string",
+      example: "2023",
+      required: true,
+    },
   },
 
   exits: {
@@ -60,7 +65,8 @@ module.exports = {
       if (!this.req.me) {
         return exits.unauthorizedRequest({ message: "No Session found" });
       }
-
+      // TODO Remove this and add cvv to model
+      delete inputs.cvv;
       let details = {
         ...inputs,
         billingCardLast4: inputs.billingCardNumber.slice(-4),

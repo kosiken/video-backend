@@ -37,9 +37,9 @@ module.exports = {
       let id = this.req.me.id;
       let views = await Purchase.find({
         userWhoPurchased: id,
-      }).populate("videoPurchases");
+      }).populate("videoPurchased").populate("channel");
 
-      return exits.success(views.map((v) => v.videoPurchased));
+      return exits.success(views);
     } catch (error) {
       return exits.serverError({
         message: error.message,

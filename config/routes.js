@@ -13,13 +13,20 @@ module.exports.routes = {
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
   "GET /": { action: "dashboard/view-welcome" },
-
+  "GET /main": { action: "dashboard/view-welcome" },
+  "GET /main/*": { action: "dashboard/view-welcome" },
+  "GET /creator/*": { action: "dashboard/view-welcome" },
+  "GET /all-channels": { action: 'get-channels' },
+  "GET /all-channels/:id": { action: 'get-channel-single' },
+  "GET /all-channels-videos/:channelId": { action: 'get-channel-videos' },
   "GET /api/video/:videoId": { action: "get-video" },
   "GET /api/user/check-access/:videoId": { action: "user/check-for-access" },
   "GET /api/user/restricted/:accessCode": { action: "user/get-video" },
   "GET /faqs": { action: "all-faqs" },
   "POST /api/creator/upload": { action: "creator/video-init" },
-  "POST /api/creator/thumbnail/:videoId": { action: "creator/update-thumbnail" },
+  "POST /api/creator/thumbnail/:videoId": {
+    action: "creator/update-thumbnail",
+  },
   "GET /videos": { action: "all-videos" },
   "GET /privacy-policy": { action: "get-privacy-policy" },
   "GET /terms-conditions": { action: "get-terms-conditions" },
@@ -52,17 +59,21 @@ module.exports.routes = {
   "GET /api/user/following": { action: "user/subcribed-channels" },
   "GET /api/user/comment/:videoId": { action: "user/get-comments" },
   "POST /api/user/comment/:videoId": { action: "user/add-comment" },
-
-
+  "POST /api/creator/channel/upload-logo": { action: "creator/upload-logo" },
+  "POST /api/creator/channel/upload-banner": {
+    action: "creator/upload-banner",
+  },
+  "POST /api/user/upload-profile-pic": { action: 'user/upload-profile-pic' },
   "POST /api/user/message/:ticketId": { action: "user/message-admin" },
   "POST /api/user/ticket": { action: "user/add-ticket" },
-
 
   "POST /api/creator/video/:uploadId": { action: "creator/upload-video" },
   "POST /api/user/like": { action: "user/like-video" },
   "POST /api/user/un-like": { action: "user/un-like-video" },
   "GET /api/user/view/:videoId": { action: "user/view-video" },
-  "GET /api/user/view-restricted/:accessCode": { action: "user/view-restricted-video" },
+  "GET /api/user/view-restricted/:accessCode": {
+    action: "user/view-restricted-video",
+  },
   "GET /api/user/purchase/:videoId": { action: "user/purchase-video" },
   "POST /api/user/card": { action: "user/add-card" },
   "GET /api/user/subscribe/:channelId": { action: "user/subscribe-to-channel" },
@@ -104,9 +115,9 @@ module.exports.routes = {
 
   "POST /admin/api/messages/:ticketId": { action: "admin/message-user" },
 
-
-
-  "POST /admin/api/terms-conditions": { action: "admin/update-terms-conditions" },
+  "POST /admin/api/terms-conditions": {
+    action: "admin/update-terms-conditions",
+  },
 
   "GET /admin/html/api/:modelName": { action: "admin/html/model" },
   "GET /admin/html/api/:modelName/:id": { action: "admin/html/view" },

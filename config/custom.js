@@ -71,7 +71,7 @@ module.exports.custom = {
   fromEmailAddress: 'kosikenspears@gmail.com',
   hostname: 'localhost',
   fromName: 'Ereder Services',
-  useToken: true,
+  useToken: false,
 
   // Email address for receiving support messages & other correspondences.
   // > If you're using the default privacy policy, this will be referenced

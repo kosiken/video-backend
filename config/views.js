@@ -37,6 +37,7 @@ module.exports.views = {
 
   layout: "layouts/layout",
   locals: {
+    title: "Ereder",
     models: [
       { name: "User", icon: "face" },
       { name: "Channel", icon: "favorite" },

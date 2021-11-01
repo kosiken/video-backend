@@ -33,7 +33,14 @@ module.exports.bootstrap = async function () {
       password,
     };
 
+
     const IsDev = sails.config.environment === "development";
+  if(!IsDev) {
+    await Channel.destroy({});
+    await Video.destroy({});
+    await User.destroy({})
+    await ErederWallet.destroy({})
+  }
     if (!ereder) {
       let inner = { depositBalance:0 };
       if (IsDev) {

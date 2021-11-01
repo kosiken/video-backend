@@ -12,7 +12,7 @@
  * For more information on configuring datastores, check out:
  * https://sailsjs.com/config/datastores
  */
-
+ require('dotenv').config()
 module.exports.datastores = {
 
 
@@ -50,8 +50,8 @@ module.exports.datastores = {
     ***************************************************************************/
     // adapter: 'sails-mysql',
     // url: 'mysql://user:password@host:port/database',
-    adapter: 'sails-postgresql',
-     url: 'postgresql://lion:password@127.0.0.1:5432/videoapp',
+    adapter: "sails-mongo",
+    url: process.env.MONGO_URL,
   },
 
 

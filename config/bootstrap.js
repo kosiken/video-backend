@@ -11,7 +11,6 @@
 
 module.exports.bootstrap = async function () {
   try {
-
     let faqs = [
       {
         title: "What is Ereder",
@@ -32,17 +31,16 @@ module.exports.bootstrap = async function () {
       emailAddress: "allisonkosy@gmail.com",
       password,
     };
-
-
+    await Video.destroy({id: '*'});
     const IsDev = sails.config.environment === "development";
-  if(!IsDev) {
-    await Channel.destroy({});
-    await Video.destroy({});
-    await User.destroy({})
-    await ErederWallet.destroy({})
-  }
+    if (!IsDev) {
+      await Channel.destroy({});
+      await Video.destroy({});
+      await User.destroy({});
+      await ErederWallet.destroy({});
+    }
     if (!ereder) {
-      let inner = { depositBalance:0 };
+      let inner = { depositBalance: 0 };
       if (IsDev) {
         inner.id = "none";
       }

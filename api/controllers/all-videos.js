@@ -14,6 +14,10 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     let videos = await Video.find().populate("channel");
-    return exits.success(videos);
+
+
+    return exits.success(videos.map(v=> {
+      return {...v, url: ""}
+    }));
   },
 };

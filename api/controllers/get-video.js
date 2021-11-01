@@ -1,13 +1,14 @@
 module.exports = {
-  friendlyName: "Un like video",
 
-  description: "",
+
+  friendlyName: 'Get video',
+
+
+  description: '',
+
 
   inputs: {
-    videoLiked: {
-      type: "string",
-      required: true,
-    },
+
   },
 
   exits: {
@@ -36,32 +37,30 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      if (!this.req.me) {
-        return exits.unauthorizedRequest({ message: "No Session found" });
-      }
-
-      let like = await Like.destroyOne({
-        likedBy: this.req.me.id,
-        videoLiked: inputs.videoLiked,
-      });
-      if (!like) {
+      let videoId = this.req.params.videoId;
+      if (!videoId) {
         return exits.badRequest({
-          message: "Trying to unlike a video that you did not like",
+          message: "videoId is required",
         });
       }
-      let video =await Video.findOne({
-       id: inputs.videoLiked
-      })
-
-      if(video && video.likeCount > 0 ){
-        await Video.updateOne({
-          id: video.id,
-
-        }, {
-          likeCount: video.likeCount - 1
+      let video = await Video.findOne({ id: videoId }).populate("channel");
+      if (!video) {
+        return exits.notFound({
+          message: "video with id " + videoId + " not found",
+        });
+      }
+      if(video.videoType === "restricted")
+      {
+        if(video.channel.user === this.req.me.id) {
+          return exits.success(video)
+        }
+        else return exits.badRequest({
+          message: "Cannot view this without an access token"
         })
       }
-      return exits.success({like: false});
+
+      return exits.success(video);
+    
     } catch (err) {
       return exits.serverError({ message: err.message });
     }

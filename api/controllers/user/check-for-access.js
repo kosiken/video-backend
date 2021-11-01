@@ -1,14 +1,9 @@
 module.exports = {
-  friendlyName: "Un like video",
+  friendlyName: "Check for access",
 
   description: "",
 
-  inputs: {
-    videoLiked: {
-      type: "string",
-      required: true,
-    },
-  },
+  inputs: {},
 
   exits: {
     success: {
@@ -36,32 +31,20 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      if (!this.req.me) {
-        return exits.unauthorizedRequest({ message: "No Session found" });
-      }
+      let { videoId } = this.req.params;
 
-      let like = await Like.destroyOne({
-        likedBy: this.req.me.id,
-        videoLiked: inputs.videoLiked,
+      let purchase = await Purchase.findOne({
+        userWhoPurchased: this.req.me.id,
+        videoPurchased: videoId,
       });
-      if (!like) {
-        return exits.badRequest({
-          message: "Trying to unlike a video that you did not like",
+
+      if (!purchase) {
+        return exits.notFound({
+          message: "Cannot Find Purchase",
         });
       }
-      let video =await Video.findOne({
-       id: inputs.videoLiked
-      })
-
-      if(video && video.likeCount > 0 ){
-        await Video.updateOne({
-          id: video.id,
-
-        }, {
-          likeCount: video.likeCount - 1
-        })
-      }
-      return exits.success({like: false});
+      // All done.
+      return exits.success(purchase);
     } catch (err) {
       return exits.serverError({ message: err.message });
     }

@@ -15,7 +15,7 @@ module.exports = {
     price: {
       type: "number",
       defaultsTo: 0,
-      min: 5,
+
     },
     title: {
       type: "string",
@@ -54,7 +54,10 @@ module.exports = {
     },
     totalViewTime: {
       type: "number", defaultsTo: 0
-    }
+    },
+    likeCount: {
+      type: "number", defaultsTo: 0
+    },
   },
   beforeCreate: async function (valuesToSet, proceed) {
     // Hash password

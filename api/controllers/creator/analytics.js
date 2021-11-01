@@ -45,6 +45,16 @@ module.exports = {
           message: "Cannot get access to model " + modelName,
         });
       }
+      let n = {};
+      let channel = await Channel.findOne({
+        user: this.req.me.id,
+      });
+      if (!channel) {
+        return exits.badRequest({
+          message: "You may not be a creator",
+        });
+      }
+  
       let attributes = Models[this.req.params.modelName].attributes;
       if (since && !isNaN(since)) {
         if (populate) {
@@ -54,14 +64,15 @@ module.exports = {
             });
           }
           ans = await Models[modelName]
-            .find({
+            .find({channel: channel.id,
               createdAt: { ">=": since },
             })
             .populate(populate);
+        } else {
+          ans = await Models[modelName].find({channel: channel.id,
+            createdAt: { ">=": since },
+          });
         }
-      else { ans = await Models[modelName].find({
-          createdAt: { ">=": since },
-        });}
       } else {
         if (populate) {
           if (!attributes[populate]) {
@@ -69,9 +80,10 @@ module.exports = {
               message: `Cannot Map model ${modelName} by property ${populate}`,
             });
           }
-          ans = await Models[modelName].find({}).populate(populate);
+          ans = await Models[modelName].find({channel: channel.id,}).populate(populate);
+        } else {
+          ans = await Models[modelName].find({channel: channel.id,});
         }
-        else {ans = await Models[modelName].find({});}
       }
 
       if (returnType === "list") {

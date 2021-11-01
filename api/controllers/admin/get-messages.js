@@ -1,16 +1,9 @@
 module.exports = {
-  friendlyName: "Message admin",
+  friendlyName: "Get messages",
 
   description: "",
 
-  inputs: {
-    // title: {type: "string",},
-
-    body: {
-      type: "string",
-      required: true,
-    },
-  },
+  inputs: {},
 
   exits: {
     success: {
@@ -23,7 +16,12 @@ module.exports = {
     },
     notFound: {
       description: "There is a problem with input parameters",
+      statusCode: 404,
       responseType: "notFound",
+    },
+    badRequest: {
+      description: "There is a problem with input parameters",
+      responseType: "badRequest",
     },
     serverError: {
       description: "There is a problem with input parameters",
@@ -33,29 +31,23 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     let ticketId = this.req.params.ticketId;
-   
+
+    // All done.
     try {
-      let ticket = await Ticket.findOne({ id: ticketId });
+      sails.log.info("getting messages");
+      let ticket = await Ticket.findOne({ id: ticketId }).populate("messages");
       if (!ticket) {
         return exits.notFound({
-          message: "Cannot Find ticket",
+          message: "No such ticket with id " + ticketId,
         });
       }
 
-      const IsDev = sails.config.environment === "development";
-      inputs = {
-        ...inputs,
-        messageType: "admin_to_user",
-        user: ticket.user,
-        ticket: ticket.id,
-      };
-      if (IsDev) {
-        inputs.id = "none";
-      }
-      await Message.create(inputs);
-      return exits.success({ sent: true });
+      let messages = ticket.messages;
+      return exits.success(messages);
     } catch (error) {
-      return exits.serverError({ message: error.message });
+      exits.serverError({
+        message: error.message,
+      });
     }
   },
 };

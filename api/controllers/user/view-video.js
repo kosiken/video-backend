@@ -29,7 +29,7 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    let purchase  = null;
+    let purchase = null;
     try {
       if (!this.req.me) {
         return exits.unauthorizedRequest({ message: "No Session found" });
@@ -50,26 +50,31 @@ module.exports = {
           message: "Cannot be viewing non existent video",
         });
       }
-      
+
       if (video.videoType === "restricted") {
+        let skip = video.channel.user === this.req.me.id;
+
         let accessToken = this.req.query.accessToken;
+        if (!skip) {
+          if (!accessToken) {
+            return exits.badRequest({
+              message: "Cannot be viewing restricted video without accessToken",
+            });
+          }
+          purchase = await Purchase.findOne({ accessCode: accessToken });
 
-      if(!accessToken)  {return exits.badRequest({
-          message: "Cannot be viewing restricted video without accessToken",
-        });}
-        purchase = await Purchase.findOne({ accessCode: accessToken });
-
-        if(!purchase || purchase.videoPurchased !== video.id) {
-          return exits.badRequest({
-            message: "Cannot be view restricted video, invalid accessToken",
-          });
+          if (!purchase || purchase.videoPurchased !== video.id) {
+            return exits.badRequest({
+              message: "Cannot be view restricted video, invalid accessToken",
+            });
+          }
         }
-
       }
-      if(inputs.duration > video.duration) {
+
+      if (inputs.duration > video.duration) {
         return exits.badRequest({
-          message: `view duration ${inputs.duration} is greater than video total duration ${video.duration}`
-        })
+          message: `view duration ${inputs.duration} is greater than video total duration ${video.duration}`,
+        });
       }
 
       let view = await View.updateOne(
@@ -95,7 +100,7 @@ module.exports = {
           duration: inputs.duration > 1000 ? inputs.duration : 1000,
           userWhoViewed: this.req.me.id,
           channel: video.channel.id,
-          isPayedView: !!purchase
+          isPayedView: !!purchase,
         };
         if (IsDev) {
           toCreate.id = "none";

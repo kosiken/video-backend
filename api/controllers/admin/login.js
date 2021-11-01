@@ -73,6 +73,11 @@ module.exports = {
       sails.log.info("Setting cookie");
       console.log(this.req.query)
       this.req.session.userId = model.id;
+      let [token] = await sails.helpers.createWebToken.with({
+        id: model.id,
+        createRefresh: true,
+      });
+      admin.token = token
       
       return exits.success(admin)
     } catch (error) {

@@ -13,11 +13,17 @@ module.exports.routes = {
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
   "GET /": { action: "dashboard/view-welcome" },
+
+  "GET /api/video/:videoId": { action: "get-video" },
+  "GET /api/user/check-access/:videoId": { action: "user/check-for-access" },
+  "GET /api/user/restricted/:accessCode": { action: "user/get-video" },
   "GET /faqs": { action: "all-faqs" },
+  "POST /api/creator/upload": { action: "creator/video-init" },
+  "POST /api/creator/thumbnail/:videoId": { action: "creator/update-thumbnail" },
   "GET /videos": { action: "all-videos" },
   "GET /privacy-policy": { action: "get-privacy-policy" },
   "GET /terms-conditions": { action: "get-terms-conditions" },
-
+  "GET /admin/api/me": { action: "admin/me" },
   "POST /reset-password": { action: "request-reset-password" },
   "GET /reset-password": { action: "verify-reset-password-token" },
   "POST /update-password": { action: "reset-password" },
@@ -30,31 +36,33 @@ module.exports.routes = {
   "GET /api/creator/become": { action: "creator/become" },
   "GET /api/creator/wallet": { action: "creator/get-wallet" },
   "GET /api/creator/analytics/:modelName": { action: "creator/analytics" },
-
+  "POST /api/creator/delete/:modelName": { action: "creator/delete" },
   "GET /api/creator/channel": { action: "creator/get-channel" },
+  "GET /api/creator/requests": { action: "creator/get-requests" },
+
   "GET /api/creator/bank-details": { action: "creator/get-account-details" },
   "POST /api/creator/channel": { action: "creator/update-channel" },
   "POST /api/creator/bank-details": { action: "creator/add-account-details" },
-  "POST /api/creator/withdraw": { action: "creator/request-withdrawal" },
+  "POST /api/creator/requests": { action: "creator/request-withdrawal" },
 
   //user
   "GET /logout": { action: "user/logout" },
   "GET /api/user/history": { action: "user/history" },
   "GET /api/user/paid-videos": { action: "user/paid-videos" },
   "GET /api/user/following": { action: "user/subcribed-channels" },
-
-  "POST /api/user/comment": { action: "user/add-comment" },
+  "GET /api/user/comment/:videoId": { action: "user/get-comments" },
+  "POST /api/user/comment/:videoId": { action: "user/add-comment" },
 
 
   "POST /api/user/message/:ticketId": { action: "user/message-admin" },
-  "POST /api/user/ticketI": { action: "user/add-ticket" },
+  "POST /api/user/ticket": { action: "user/add-ticket" },
 
 
-  "POST /api/creator/video": { action: "creator/upload-video" },
+  "POST /api/creator/video/:uploadId": { action: "creator/upload-video" },
   "POST /api/user/like": { action: "user/like-video" },
   "POST /api/user/un-like": { action: "user/un-like-video" },
   "GET /api/user/view/:videoId": { action: "user/view-video" },
-  "GET /api/user/view-restricted/:videoId/:accessCode": { action: "user/view-restricted-video" },
+  "GET /api/user/view-restricted/:accessCode": { action: "user/view-restricted-video" },
   "GET /api/user/purchase/:videoId": { action: "user/purchase-video" },
   "POST /api/user/card": { action: "user/add-card" },
   "GET /api/user/subscribe/:channelId": { action: "user/subscribe-to-channel" },
@@ -94,7 +102,7 @@ module.exports.routes = {
   "POST /admin/html/login": { action: "admin/html/login" },
   "POST /admin/api/privacy-policy": { action: "admin/update-privacy-policy" },
 
-  "POST /admin/api/message/:ticketId": { action: "admin/message-user" },
+  "POST /admin/api/messages/:ticketId": { action: "admin/message-user" },
 
 
 
@@ -108,9 +116,11 @@ module.exports.routes = {
 
   "POST /admin/signup": { action: "admin/signup" },
   "POST /admin/login": { action: "admin/login" },
-  "POST /admin/api/handle-withdrawal-request": {
+  "POST /admin/api/handle-withdrawal-request/:requestId": {
     action: "admin/handle-withdrawal-request",
   },
+
+  "GET /admin/api/messages/:ticketId": { action: "admin/get-messages" },
   "GET /admin/api/:modelName": { action: "admin/model" },
   "GET /admin/api/:modelName/:id": { action: "admin/view" },
   "GET /admin/api/edit/:modelName/:id": { action: "admin/edit" },

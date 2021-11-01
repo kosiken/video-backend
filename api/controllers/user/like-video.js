@@ -68,9 +68,15 @@ module.exports = {
         like = await Like.create({
           ...inputs,
           likedBy: this.req.me.id,
-        }).fetch();
+        });
+        await Video.updateOne({
+          id: video.id,
+
+        }, {
+          likeCount: video.likeCount + 1
+        })
       }
-      return exits.success(like);
+      return exits.success({like: true});
     } catch (err) {
       return exits.serverError({ message: err.message });
     }

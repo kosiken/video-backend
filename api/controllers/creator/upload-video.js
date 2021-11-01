@@ -10,10 +10,6 @@ module.exports = {
     price: {
       type: "number",
     },
-    url: {
-      type: "string",
-      required: true,
-    },
     title: {
       type: "string",
       required: true,
@@ -24,9 +20,10 @@ module.exports = {
     description: {
       type: "string",
     },
-    duration: {
-      type: "number",
-    },
+  duration: {
+type: "number",
+required: true
+  },
     videoType: {
       type: "string",
       isIn: ["public", "restricted"],
@@ -59,6 +56,18 @@ module.exports = {
       if (!this.req.me) {
         return exits.unauthorizedRequest({ message: "No Session found" });
       }
+      let uploadId = this.req.params.uploadId;
+      let upload = await Upload.findOne({
+        id: uploadId
+      });
+
+      if(!upload) {
+        return exits.badRequest({
+          message: "No associated with upload with id",
+        });
+      }
+  
+      inputs.url = "/uploads/" + upload.basename;
       let channel = await Channel.findOne({ user: this.req.me.id });
 
       if (!channel) {
@@ -87,7 +96,9 @@ module.exports = {
         channel: channel.id,
         uploaded: Date.now(),
       }).fetch();
-
+      await Upload.destroyOne({
+        id: upload.id
+      });
       await Channel.updateOne(
         {
           id: channel.id,

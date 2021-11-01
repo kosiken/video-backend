@@ -43,6 +43,8 @@ module.exports = {
         return exits.unauthorizedRequest({ message: "No Session found" });
       }
 
+      
+
       const { accessCode } = this.req.params;
       if (!accessCode) {
         return exits.badRequest({
@@ -50,7 +52,8 @@ module.exports = {
         });
       }
 
-      let purchase = Purchase.findOne({ accessCode }).populate(
+
+      let purchase = await Purchase.findOne({ accessCode }).populate(
         "videoPurchased"
       );
       if (!purchase) {

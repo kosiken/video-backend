@@ -1,14 +1,16 @@
 module.exports = {
-  friendlyName: "Un like video",
 
-  description: "",
+
+  friendlyName: 'Get comments',
+
+
+  description: '',
+
 
   inputs: {
-    videoLiked: {
-      type: "string",
-      required: true,
-    },
+
   },
+
 
   exits: {
     success: {
@@ -36,32 +38,17 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      if (!this.req.me) {
-        return exits.unauthorizedRequest({ message: "No Session found" });
-      }
-
-      let like = await Like.destroyOne({
-        likedBy: this.req.me.id,
-        videoLiked: inputs.videoLiked,
-      });
-      if (!like) {
+      let videoId = this.req.params.videoId;
+      if (!videoId) {
         return exits.badRequest({
-          message: "Trying to unlike a video that you did not like",
+          message: "videoId is required",
         });
       }
-      let video =await Video.findOne({
-       id: inputs.videoLiked
-      })
+   
 
-      if(video && video.likeCount > 0 ){
-        await Video.updateOne({
-          id: video.id,
+      let comments = await Comment.find({video: videoId}).populate("user");
+      return exits.success(comments)
 
-        }, {
-          likeCount: video.likeCount - 1
-        })
-      }
-      return exits.success({like: false});
     } catch (err) {
       return exits.serverError({ message: err.message });
     }

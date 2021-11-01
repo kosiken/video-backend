@@ -4,10 +4,7 @@ module.exports = {
   description: "",
 
   inputs: {
-    requestId: {
-      type: "string",
-      required: true,
-    },
+
     status: {
       type: "string",
       required: true,
@@ -41,6 +38,8 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
+      inputs.requestId = this.req.params.requestId;
+      
       const IsDev = sails.config.environment === "development";
       let request = await Request.findOne({
         id: inputs.requestId,
@@ -48,7 +47,7 @@ module.exports = {
 
       if (!request) {
         return exits.notFound({
-          message: "cannot find withdrawal request",
+          message: "cannot find withdrawal request with id " +  inputs.requestId,
         });
       }
 
@@ -109,11 +108,7 @@ module.exports = {
             depositBalance: ereder.depositBalance - transaction.amount,
           }
         );
-        let user = request.userAssociated;
-        request.userAssociated = {
-          bankName: user.bankName,
-          bankAccountNumber: user.bankAccountNumber,
-        };
+      
       }
       return exits.success(request);
     } catch (error) {

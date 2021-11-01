@@ -1,7 +1,7 @@
 module.exports = {
-  friendlyName: "Model",
+  friendlyName: "Analytics",
 
-  description: "Model admin.",
+  description: "Analytics creator.",
 
   inputs: {},
 
@@ -26,40 +26,79 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     const Models = {
-      video: Video,
-      channel: Channel,
-
-      user: User,
-
-      request: Request,
-      transaction: Transaction,
-      wallet: Wallet,
+   request: Request,
+   ticket: Ticket, 
+   wallet: Wallet
     };
 
+    let modelName = this.req.params.modelName;
+    let since = parseInt(this.req.query.since);
+    let returnType = this.req.query.returnType || "list";
+    let map = this.req.query.map;
+    let ans = [];
+    let populate = this.req.query.populate;
     try {
-      const req = this.req;
-      const query = this.req.query;
-      if (query && query.page) {
-        page = query.page;
-      }
-
-      let theModel = Models[req.params.modelName];
-      if (!theModel) {
+      if (!Models[modelName]) {
         return exits.badRequest({
-          message: `Cannot find ${req.params.modelName}, ${req.params.modelName} model does not exist`,
+          message: "Cannot get access to model " + modelName,
         });
       }
-      const _model = Models[this.req.params.modelName];
-      // console.log(_model);
+    
+  
+      let attributes = Models[this.req.params.modelName].attributes;
+      if (since && !isNaN(since)) {
+        if (populate) {
+          if (!attributes[populate]) {
+            return exits.badRequest({
+              message: `Cannot Map model ${modelName} by property ${populate}`,
+            });
+          }
+          ans = await Models[modelName]
+            .find({ 
+              createdAt: { ">=": since },
+            })
+            .populate(populate);
+        } else {
+          ans = await Models[modelName].find({ 
+            createdAt: { ">=": since },
+          });
+        }
+      } else {
+        if (populate) {
+          if (!attributes[populate]) {
+            return exits.badRequest({
+              message: `Cannot Map model ${modelName} by property ${populate}`,
+            });
+          }
+          ans = await Models[modelName].find({ }).populate(populate);
+        } else {
+          ans = await Models[modelName].find({ });
+        }
+      }
 
-      const objects = await _model.find();
+      if (returnType === "list") {
+        return exits.success(ans);
+      } else if (returnType === "map") {
+        if (!map) {
+          return exits.badRequest({
+            message: "No property to map",
+          });
+        }
 
-      // All done.
-      return exits.success(objects);
-    } catch (error) {
-      return exits.serverError({
-        message: `Cannot load this page at this time error -> ${error.message}`,
-      });
+        if (!attributes[map]) {
+          return exits.badRequest({
+            message: `Cannot Map model ${modelName} by property ${map}`,
+          });
+        } else {
+          return exits.success(ans.map((a) => a[map]));
+        }
+      } else {
+        return exits.success({ count: ans.length });
+      }
+    } catch (err) {
+      return exits.serverError({ message: err.message });
     }
+
+    // All done.
   },
 };

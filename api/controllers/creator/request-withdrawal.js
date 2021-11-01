@@ -76,10 +76,10 @@ module.exports = {
 
 
 
-      return exits.success(request)
+      return exits.success(request);
       
     } catch (error) {
-      throw error;
+    
       exits.serverError({
         message: error.message
       })

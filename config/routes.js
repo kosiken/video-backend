@@ -16,6 +16,8 @@ module.exports.routes = {
   "GET /main": { action: "dashboard/view-welcome" },
   "GET /main/*": { action: "dashboard/view-welcome" },
   "GET /creator/*": { action: "dashboard/view-welcome" },
+  "GET /login": { action: "dashboard/view-welcome" },
+  "GET /signup": { action: "dashboard/view-welcome" },
   "GET /all-channels": { action: 'get-channels' },
   "GET /all-channels/:id": { action: 'get-channel-single' },
   "GET /all-channels-videos/:channelId": { action: 'get-channel-videos' },
